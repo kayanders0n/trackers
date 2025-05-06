@@ -9,6 +9,7 @@ const PORT = 3000;
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
 
 // Serve index.html for root route "/"
 app.get("/", (req, res) => {
@@ -22,18 +23,47 @@ app.get("/api/friends", async (req, res) => {
     if (!Firebird) {
       return res.status(500).json({ error: "Failed to connect to Firebird" });
     }
-    // console.log("connected to firebird");
-    Firebird.query("SELECT * FROM TYPE", (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
 
-      res.json(result);
-      Firebird.detach();
-    });
+    // Runs the query
+    Firebird.query(
+      "SELECT * FROM FRIENDS",
+      // Callback function -- handles the response
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+
+        res.json(result);
+        Firebird.detach();
+      }
+    );
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+// API route to add a new friend to Firebird
+app.post("/api/addFriend", async (req, res) => {
+  const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: "Name is required" });
+  }
+
+  const Firebird = await getFirebirdClient();
+  if (!Firebird) {
+    return res.status(500).json({ error: "Failed to connect to Firebird" });
+  }
+
+  // Runs the query
+  Firebird.query("INSERT INTO FRIENDS (NAME) VALUES (?)", [name], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    res.json(result);
+    Firebird.detach();
+  });
 });
 
 // Start the server
