@@ -3,17 +3,19 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-      "start": "node express-server.js",
-      "db1": "node ./lib/node-firebird.js",
-      "db2": "node ./lib/node-firebird-driver-native.js"
+        "start": "node express-server.js",
+        "dev": "nodemon",
+        "db1": "node ./lib/node-firebird.js",
+        "db2": "node ./lib/node-firebird-driver-native.js"
     },
     "author": "",
     "license": "ISC",
     "description": "",
     "dependencies": {
-      "bootstrap": "^5.3.3",
-      "express": "^4.21.2",
-      "node-firebird": "^1.1.9",
-      "node-firebird-driver-native": "^3.2.2"
+        "bootstrap": "^5.3.3",
+        "express": "^4.21.2",
+        "node-firebird": "^1.1.9",
+        "node-firebird-driver-native": "^3.2.2",
+        "nodemon": "^3.1.10"
     }
-  }
+}

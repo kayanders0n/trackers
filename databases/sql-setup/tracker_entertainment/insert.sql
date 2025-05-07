@@ -1,6 +1,3 @@
-/* small changes*/
-
-
 -- Insert Types
 INSERT INTO TYPECODES (ID, DESCRIPT) 
 VALUES  (1, 'BOOK');
