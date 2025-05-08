@@ -1,5 +1,13 @@
 /* Your custom styles can go here */
 
+#series-dropdown-wrapper {
+  display: none;
+}
+
+#new-series-wrapper {
+  display: none;
+}
+
 /*.title {
     color: #5e42ad;
     font-size: 2rem;
