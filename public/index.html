@@ -92,7 +92,6 @@
 
     <div class="column is-half">
       <div class="section">
-        
         <p class="subtitle is-3">Insert Movie</p>
 
         <div class="field is-horizontal">
@@ -101,7 +100,7 @@
           </div>
           <div class="field-body">
             <div class="field">
-              <input class="input" type="text" placeholder="Movie Title" />
+              <input class="input" type="text" placeholder="Movie Title" id="movieTitle" />
             </div>
           </div>
         </div>
@@ -112,57 +111,59 @@
           </div>
           <div class="field-body">
             <div class="field">
-              <input class="input" type="text" placeholder="Release Date" />
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <label class="label">Series?</label>
-          </div>
-          <div class="field-body">
-            <div class="field is-narrow">
-              <div class="control">
-                <label class="radio">
-                  <input type="radio" name="member">
-                  Yes
-                </label>
-                <label class="radio">
-                  <input type="radio" name="member">
-                  No
-                </label>
-              </div>
+              <input class="input" type="text" placeholder="Release Date" id="releaseDate"/>
             </div>
           </div>
         </div>
 
         <div class="field is-horizontal">
           <div class="field-label is-normal">
-            <label class="label">Run Time</label>
+            <label class="label">Series?</label>
           </div>
           <div class="field-body">
-            <div class="field">
-              <p class="control is-expanded">
-                <input class="input" type="text" placeholder="Hours">
-              </p>
-              <p class="help">Hours</p>
+            <div class="column is-one-fifth">
+              <div class="field is-narrow">
+                <div class="control">
+                  <label class="radio">
+                    <input type="radio" name="series" value="Yes" />
+                    Yes
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="series" value="No" />
+                    No
+                  </label>
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <p class="control is-expanded">
-                <input class="input" type="text" placeholder="Minutes">
-              </p>
-              <p class="help">Minutes</p>
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Run Time</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control is-narrow">
+                    <input class="input is-narrow" type="text" placeholder="0" id="runTimeHours" />
+                  </p>
+                  <p class="help">Hours</p>
+                </div>
+                <div class="field">
+                  <p class="control is-narrow">
+                    <input class="input" type="text" placeholder="0" id="runTimeMinutes" />
+                  </p>
+                  <p class="help">Minutes</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="buttons">
-          <a class="button is-link is-soft">Save Changes</a>
-          <a class="button is-danger is-soft">Cancel</a>
+          <a id="saveButton" class="button is-link is-soft">Save Changes</a>
+          <a id="cancelButton" class="button is-danger is-soft">Cancel</a>
         </div>
       </div>
     </div>
+
     <!--  <div class="row">
         <div class="col-6">
           <h5>My friends list</h5>
@@ -183,5 +184,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>-->
+    
   </body>
 </html>
