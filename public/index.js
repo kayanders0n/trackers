@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
       seriesDropdownWrapper.style.display = "block";
     } else {
       seriesDropdownWrapper.style.display = "none";           // hide dropdown
-      newSeriesWrapper.style.display = "none";          // hide "New Series" input
-      seriesDropdown.value = "";                        // reset dropdown
+      newSeriesWrapper.style.display = "none";                // hide "New Series" input
+      seriesDropdown.value = "";                              // reset dropdown
       document.getElementById("new-series-input").value = ""; // reset "New Series" input
     }
   });
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (seriesDropdown.value === "New Series") {
       newSeriesWrapper.style.display = "block";
     } else {
-      newSeriesWrapper.style.display = "none";          // hide "New Series" input
+      newSeriesWrapper.style.display = "none";                // hide "New Series" input
       document.getElementById("new-series-input").value = ""; // reset "New Series" input
     }
   });
@@ -56,6 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const seriesName = document.getElementById("series-dropdown").value;    
     const newSeriesName = document.getElementById("new-series-input").value;
 
+    const runTimeTotalMin = (parseInt(runTimeHours) * 60) + parseInt(runTimeMinutes);
+
     if (movieTitle === "") {
       console.log("Please Enter Movie Title.");
     } else if (isSeries && !seriesName) {
@@ -66,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Movie Title:", movieTitle);
       console.log("Release Date:", releaseDate);
       console.log("Run Time:", `${runTimeHours}h ${runTimeMinutes}m`);
+      console.log("Run Time Total Min:", runTimeTotalMin);
       console.log("Is part of a series:", isSeries ? "Yes" : "No");
       console.log("Selected Genre:", seriesName || "None selected");
       console.log("Selected Name:", newSeriesName || "None selected");
