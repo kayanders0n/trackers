@@ -6,10 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="index.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
     <title>Simple Website</title>
     <link rel="stylesheet" href="css/index.css" />
   </head>
@@ -18,13 +15,7 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
-        <svg
-          width="640"
-          height="160"
-          viewBox="0 0 640 160"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="640" height="160" viewBox="0 0 640 160" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fill-rule="evenodd"
             clip-rule="evenodd"
@@ -32,22 +23,11 @@
             fill="black"
             class="bd-svg-black"
           />
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M0 110L10 40L50 0L100 50L70 80L110 120L50 160L0 110Z"
-            fill="#00D1B2"
-          />
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0 110L10 40L50 0L100 50L70 80L110 120L50 160L0 110Z" fill="#00D1B2" />
         </svg>
       </a>
 
-      <a
-        role="button"
-        class="navbar-burger"
-        aria-label="menu"
-        aria-expanded="false"
-        data-target="navbarBasicExample"
-      >
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -101,12 +81,7 @@
             </div>
             <div class="field-body">
               <div class="field">
-                <input
-                  class="input"
-                  id="movie-title-input"
-                  type="text"
-                  placeholder="Movie Title"
-                />
+                <input class="input" id="movie-title-input" type="text" placeholder="Movie Title" />
               </div>
             </div>
           </div>
@@ -117,12 +92,7 @@
             </div>
             <div class="field-body">
               <div class="field">
-                <input
-                  class="input"
-                  id="release-date-input"
-                  type="text"
-                  placeholder="Release Date"
-                />
+                <input class="input" id="release-date-input" type="text" placeholder="Release Date" />
               </div>
             </div>
           </div>
@@ -134,23 +104,13 @@
             <div class="field-body">
               <div class="field">
                 <p class="control is-narrow">
-                  <input
-                    class="input is-narrow"
-                    id="run-time-hours-input"
-                    type="number"
-                    placeholder="0"
-                  />
+                  <input class="input is-narrow" id="run-time-hours-input" type="number" placeholder="0" />
                 </p>
                 <p class="help">Hours</p>
               </div>
               <div class="field">
                 <p class="control is-narrow">
-                  <input
-                    class="input"
-                    id="run-time-minutes-input"
-                    type="number"
-                    placeholder="0"
-                  />
+                  <input class="input" id="run-time-minutes-input" type="number" placeholder="0" />
                 </p>
                 <p class="help">Minutes</p>
               </div>
@@ -184,9 +144,7 @@
                           <option value="">Select Dropdown</option>
                           <option value="New Series">*New Series*</option>
                           <option value="Harry Potter">Harry Potter</option>
-                          <option value="Marvel Universe">
-                            Marvel Universe
-                          </option>
+                          <option value="Marvel Universe">Marvel Universe</option>
                           <option value="Toy Story">Toy Story</option>
                         </select>
                       </div>
@@ -204,12 +162,7 @@
               </div>
               <div class="field-body">
                 <div class="field">
-                  <input
-                    class="input"
-                    id="new-series-input"
-                    type="text"
-                    placeholder="Series Name"
-                  />
+                  <input class="input" id="new-series-input" type="text" placeholder="Series Name" />
                 </div>
               </div>
             </div>
@@ -234,9 +187,9 @@
               <button class="delete" aria-label="delete"></button>
             </div>
             <div class="message-body">
-              <textarea id="movieList" rows="10"></textarea>
+              <textarea id="movie-list" rows="10"></textarea>
               <br />
-              <button id="getMovies" onclick="getMovies()">Get Movies</button>
+              <button id="get-movies" onclick="getMovies()">Get Movies</button>
             </div>
           </article>
         </div>

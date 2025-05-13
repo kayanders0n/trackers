@@ -11,40 +11,45 @@ function clearForm() {
   // Also hide the conditional fields
   document.getElementById("series-dropdown-wrapper").style.display = "none";
   document.getElementById("new-series-wrapper").style.display = "none";
-};
+}
 
 async function getMovies() {
   try {
-    // Make API request to fetch friends data
+    // Make API request to fetch movie data
     const response = await fetch("/api/movies");
     const data = await response.json();
-
-    // Get reference to the friends list textarea/input element
+    console.log(data);
+    // Get reference to the movie list textarea element
     if (data.error) {
       // Display error message if API returns an error
-      document.getElementById("movieList").value = data.error;
+      document.getElementById("movie-list").value = data.error;
     } else {
-      // Initialize empty string to store friend names
+      // Initialize empty string to store movie titles
       let movieList = "";
 
-      // Iterate through friends data and build display string
+      // Iterate through movie data and build display string
       for (const movie of data) {
-        movieList += `${movie.NAME}\n`;
+        movieList += `${movie.DESCRIPT}\n`;
       }
-      // Update UI with list of friend names
-      document.getElementById("movieList").value = movieList;
+      // Update UI with list of movie titles
+      document.getElementById("movie-list").value = movieList;
     }
   } catch (error) {
     // Handle any errors that occur during API call
-    document.getElementById("movieList").value = "Error fetching data";
+    document.getElementById("movie-list").value = "Error fetching data";
+    console.error(error);
   }
 }
 
 async function addMovie() {
   const movieTitle = document.getElementById("movie-title-input").value;
-  console.log(movieTitle);
+  const releaseDate = document.getElementById("release-date-input").value;
+  const runTimeHours = document.getElementById("run-time-hours-input").value;
+  const runTimeMinutes = document.getElementById("run-time-minutes-input").value;
+  const totalRunTime = parseInt(runTimeHours) * 60 + parseInt(runTimeMinutes);
+
   if (!movieTitle) {
-    document.getElementById("movieList").value = "Title is required";
+    document.getElementById("movie-list").value = "Title is required";
     return;
   }
 
@@ -53,18 +58,22 @@ async function addMovie() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name: movieTitle }),
+    body: JSON.stringify({
+      title: movieTitle,
+      releaseDate: releaseDate,
+      runTime: totalRunTime,
+    }),
   });
 
   if (response.ok) {
     getMovies();
   } else {
-    document.getElementById("movieList").value = response.error;
+    const errorData = await response.json(); // get error info from the server
+    document.getElementById("movie-list").value = errorData.error || "Unknown error";
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const seriesCheckbox = document.getElementById("series-checkbox");
   const seriesDropdownWrapper = document.getElementById("series-dropdown-wrapper");
   const seriesDropdown = document.getElementById("series-dropdown");
@@ -79,9 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (seriesCheckbox.checked) {
       seriesDropdownWrapper.style.display = "block";
     } else {
-      seriesDropdownWrapper.style.display = "none";           // hide dropdown
-      newSeriesWrapper.style.display = "none";                // hide "New Series" input
-      seriesDropdown.value = "";                              // reset dropdown
+      seriesDropdownWrapper.style.display = "none"; // hide dropdown
+      newSeriesWrapper.style.display = "none"; // hide "New Series" input
+      seriesDropdown.value = ""; // reset dropdown
       document.getElementById("new-series-input").value = ""; // reset "New Series" input
     }
   });
@@ -91,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (seriesDropdown.value === "New Series") {
       newSeriesWrapper.style.display = "block";
     } else {
-      newSeriesWrapper.style.display = "none";                // hide "New Series" input
+      newSeriesWrapper.style.display = "none"; // hide "New Series" input
       document.getElementById("new-series-input").value = ""; // reset "New Series" input
     }
   });
@@ -103,10 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const runTimeHours = document.getElementById("run-time-hours-input").value;
     const runTimeMinutes = document.getElementById("run-time-minutes-input").value;
     const isSeries = document.getElementById("series-checkbox").checked;
-    const seriesName = document.getElementById("series-dropdown").value;    
+    const seriesName = document.getElementById("series-dropdown").value;
     const newSeriesName = document.getElementById("new-series-input").value;
 
-    const runTimeTotalMin = (parseInt(runTimeHours) * 60) + parseInt(runTimeMinutes);
+    const runTimeTotalMin = parseInt(runTimeHours) * 60 + parseInt(runTimeMinutes);
 
     if (!movieTitle) {
       console.log("Please Enter Movie Title.");
@@ -122,8 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Is part of a series:", isSeries ? "Yes" : "No");
       console.log("Selected Genre:", seriesName || "None selected");
       console.log("Selected Name:", newSeriesName || "None selected");
-  
+
       console.log("Input Saved.");
+      addMovie();
       clearForm();
     }
   });
@@ -134,8 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Form Cleared.");
   });
 });
-
-
 
 /**
  * Fetches and displays a list of friends from the API

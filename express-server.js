@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// API route to fetch friends from Firebird
+// API route to fetch movies from Firebird
 app.get("/api/movies", async (req, res) => {
   try {
     const Firebird = await getFirebirdClient();
@@ -26,7 +26,7 @@ app.get("/api/movies", async (req, res) => {
 
     // Runs the query
     Firebird.query(
-      "SELECT * FROM ITEMS",
+      "SELECT * FROM ITEM",
       // Callback function -- handles the response
       (err, result) => {
         if (err) {
@@ -42,21 +42,21 @@ app.get("/api/movies", async (req, res) => {
   }
 });
 
-// API route to add a new friend to Firebird
+// API route to add a new movie to Firebird
 app.post("/api/addMovie", async (req, res) => {
-  const { name } = req.body;
+  const { title, releaseDate, runTime } = req.body;
 
-  if (!name) {
+  if (!title) {
     return res.status(400).json({ error: "Title is required" });
   }
-
+  
   const Firebird = await getFirebirdClient();
   if (!Firebird) {
     return res.status(500).json({ error: "Failed to connect to Firebird" });
   }
 
   // Runs the query
-  Firebird.query("INSERT INTO ITEMS (NAME) VALUES (?)", [name], (err, result) => {
+  Firebird.query("INSERT INTO ITEM (ID, TYPEID, DESCRIPT, FIRSTRELEASE, LENGTH) VALUES (2, 1, ?, ?, ?)", [title, releaseDate, runTime], (err, result) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
