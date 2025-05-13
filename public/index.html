@@ -41,7 +41,13 @@
         </svg>
       </a>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+      >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -84,108 +90,155 @@
       </div>
     </section>
 
-    <div class="column is-half">
-      <div class="section">
-        <p class="subtitle is-3">Insert Movie</p>
+    <div class="columns">
+      <div class="column is-half">
+        <div class="section">
+          <p class="subtitle is-3">Insert Movie</p>
 
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Movie Title</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <input class="input" id="movie-title-input" type="text" placeholder="Movie Title" />
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Movie Title</label>
             </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Release Date</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <input class="input" id="release-date-input" type="text" placeholder="Release Date" />
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Run Time</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control is-narrow">
-                <input class="input is-narrow" id="run-time-hours-input" type="number" placeholder="0" />
-              </p>
-              <p class="help">Hours</p>
-            </div>
-            <div class="field">
-              <p class="control is-narrow">
-                <input class="input" id="run-time-minutes-input" type="number" placeholder="0" />
-              </p>
-              <p class="help">Minutes</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Series?</label>
-          </div>
-          <div class="field-body">
-            <div class="column is-one-fifth">
-              <div class="field is-narrow">
-                <div class="control">
-                  <label class="checkbox">
-                    <input type="checkbox" id="series-checkbox" />
-                    Yes
-                  </label>
-                </div>
+            <div class="field-body">
+              <div class="field">
+                <input
+                  class="input"
+                  id="movie-title-input"
+                  type="text"
+                  placeholder="Movie Title"
+                />
               </div>
             </div>
-            <div class="column is-four-fifths">
-              <div id="series-dropdown-wrapper">
-                <div class="field is-horizontal">
-                  <div class="field-label">
-                    <label class="label">Series Name</label>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Release Date</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <input
+                  class="input"
+                  id="release-date-input"
+                  type="text"
+                  placeholder="Release Date"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Run Time</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-narrow">
+                  <input
+                    class="input is-narrow"
+                    id="run-time-hours-input"
+                    type="number"
+                    placeholder="0"
+                  />
+                </p>
+                <p class="help">Hours</p>
+              </div>
+              <div class="field">
+                <p class="control is-narrow">
+                  <input
+                    class="input"
+                    id="run-time-minutes-input"
+                    type="number"
+                    placeholder="0"
+                  />
+                </p>
+                <p class="help">Minutes</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Series?</label>
+            </div>
+            <div class="field-body">
+              <div class="column is-one-fifth">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <label class="checkbox">
+                      <input type="checkbox" id="series-checkbox" />
+                      Yes
+                    </label>
                   </div>
-                  <div class="field-body">
-                    <div class="select is-fullwidth">
-                      <select id="series-dropdown">
-                        <option value="">Select Dropdown</option>
-                        <option value="New Series">*New Series*</option>
-                        <option value="Harry Potter">Harry Potter</option>
-                        <option value="Marvel Universe">Marvel Universe</option>
-                        <option value="Toy Story">Toy Story</option>
-                      </select>
+                </div>
+              </div>
+              <div class="column is-four-fifths">
+                <div id="series-dropdown-wrapper">
+                  <div class="field is-horizontal">
+                    <div class="field-label">
+                      <label class="label">Series Name</label>
+                    </div>
+                    <div class="field-body">
+                      <div class="select is-fullwidth">
+                        <select id="series-dropdown">
+                          <option value="">Select Dropdown</option>
+                          <option value="New Series">*New Series*</option>
+                          <option value="Harry Potter">Harry Potter</option>
+                          <option value="Marvel Universe">
+                            Marvel Universe
+                          </option>
+                          <option value="Toy Story">Toy Story</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div id="new-series-wrapper">
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Series Name</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" id="new-series-input" type="text" placeholder="Series Name" />
+          <div id="new-series-wrapper">
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Series Name</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <input
+                    class="input"
+                    id="new-series-input"
+                    type="text"
+                    placeholder="Series Name"
+                  />
+                </div>
               </div>
             </div>
           </div>
+
+          <div class="field"></div>
+
+          <div class="buttons">
+            <a class="button is-link is-soft" id="saveButton">Save Changes</a>
+            <a class="button is-danger is-soft" id="cancelButton">Cancel</a>
+          </div>
         </div>
+      </div>
 
-        <div class="field"></div>
+      <div class="column is-half">
+        <div class="section">
+          <p class="subtitle is-3">List Movies</p>
 
-        <div class="buttons">
-          <a class="button is-link is-soft" id="saveButton">Save Changes</a>
-          <a class="button is-danger is-soft" id="cancelButton">Cancel</a>
+          <article class="message">
+            <div class="message-header">
+              <p>My Movies</p>
+              <button class="delete" aria-label="delete"></button>
+            </div>
+            <div class="message-body">
+              <textarea id="movieList" rows="10"></textarea>
+              <br />
+              <button id="getMovies" onclick="getMovies()">Get Movies</button>
+            </div>
+          </article>
         </div>
       </div>
     </div>

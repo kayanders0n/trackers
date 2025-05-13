@@ -13,6 +13,56 @@ function clearForm() {
   document.getElementById("new-series-wrapper").style.display = "none";
 };
 
+async function getMovies() {
+  try {
+    // Make API request to fetch friends data
+    const response = await fetch("/api/movies");
+    const data = await response.json();
+
+    // Get reference to the friends list textarea/input element
+    if (data.error) {
+      // Display error message if API returns an error
+      document.getElementById("movieList").value = data.error;
+    } else {
+      // Initialize empty string to store friend names
+      let movieList = "";
+
+      // Iterate through friends data and build display string
+      for (const movie of data) {
+        movieList += `${movie.NAME}\n`;
+      }
+      // Update UI with list of friend names
+      document.getElementById("movieList").value = movieList;
+    }
+  } catch (error) {
+    // Handle any errors that occur during API call
+    document.getElementById("movieList").value = "Error fetching data";
+  }
+}
+
+async function addMovie() {
+  const movieTitle = document.getElementById("movie-title-input").value;
+  console.log(movieTitle);
+  if (!movieTitle) {
+    document.getElementById("movieList").value = "Title is required";
+    return;
+  }
+
+  const response = await fetch("/api/addMovie", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: movieTitle }),
+  });
+
+  if (response.ok) {
+    getMovies();
+  } else {
+    document.getElementById("movieList").value = response.error;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const seriesCheckbox = document.getElementById("series-checkbox");
@@ -58,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const runTimeTotalMin = (parseInt(runTimeHours) * 60) + parseInt(runTimeMinutes);
 
-    if (movieTitle === "") {
+    if (!movieTitle) {
       console.log("Please Enter Movie Title.");
     } else if (isSeries && !seriesName) {
       console.log("Please Select a Series.");

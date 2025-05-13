@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 // API route to fetch friends from Firebird
-app.get("/api/friends", async (req, res) => {
+app.get("/api/movies", async (req, res) => {
   try {
     const Firebird = await getFirebirdClient();
     if (!Firebird) {
@@ -26,7 +26,7 @@ app.get("/api/friends", async (req, res) => {
 
     // Runs the query
     Firebird.query(
-      "SELECT * FROM FRIENDS",
+      "SELECT * FROM ITEMS",
       // Callback function -- handles the response
       (err, result) => {
         if (err) {
@@ -43,11 +43,11 @@ app.get("/api/friends", async (req, res) => {
 });
 
 // API route to add a new friend to Firebird
-app.post("/api/addFriend", async (req, res) => {
+app.post("/api/addMovie", async (req, res) => {
   const { name } = req.body;
 
   if (!name) {
-    return res.status(400).json({ error: "Name is required" });
+    return res.status(400).json({ error: "Title is required" });
   }
 
   const Firebird = await getFirebirdClient();
@@ -56,7 +56,7 @@ app.post("/api/addFriend", async (req, res) => {
   }
 
   // Runs the query
-  Firebird.query("INSERT INTO FRIENDS (NAME) VALUES (?)", [name], (err, result) => {
+  Firebird.query("INSERT INTO ITEMS (NAME) VALUES (?)", [name], (err, result) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
