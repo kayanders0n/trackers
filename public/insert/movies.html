@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insert Movie</title>
+    <link rel="stylesheet" href="../assets/css/index.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+    <script src="../assets/js/index.js" defer></script>
+    <script src="../insert/movies.js" defer></script>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Hero Section with Tabs -->
+    <div id="hero-placeholder"></div>
+
+    <!-- Page Content -->
+    <section class="section">
+      <div class="columns">
+        <div class="column is-half">
+          <div class="section">
+            <p class="subtitle is-3">Insert Movie</p>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Movie Title</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <input class="input" id="movie-title-input" type="text" placeholder="Movie Title" />
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Release Date</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <input class="input" id="release-date-input" type="text" placeholder="Release Date" />
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Run Time</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control is-narrow">
+                    <input class="input is-narrow" id="run-time-hours-input" type="number" placeholder="0" />
+                  </p>
+                  <p class="help">Hours</p>
+                </div>
+                <div class="field">
+                  <p class="control is-narrow">
+                    <input class="input" id="run-time-minutes-input" type="number" placeholder="0" />
+                  </p>
+                  <p class="help">Minutes</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Series?</label>
+              </div>
+              <div class="field-body">
+                <div class="column is-one-fifth">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <label class="checkbox">
+                        <input type="checkbox" id="series-checkbox" />
+                        Yes
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-four-fifths">
+                  <div id="series-dropdown-wrapper">
+                    <div class="field is-horizontal">
+                      <div class="field-label">
+                        <label class="label">Series Name</label>
+                      </div>
+                      <div class="field-body">
+                        <div class="select is-fullwidth">
+                          <select id="series-dropdown"></select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="new-series-wrapper">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Series Name</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <input class="input" id="new-series-input" type="text" placeholder="Series Name" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field"></div>
+
+            <div id="series-order-wrapper">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Place in Series</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <input class="input" id="order-number-input" type="number" placeholder="0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field"></div>
+
+            <div class="buttons">
+              <a class="button is-link is-soft" id="save-button">Save Changes</a>
+              <a class="button is-danger is-soft" id="cancel-button">Cancel</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-half">
+          <div class="section">
+            <p class="subtitle is-3">List Movies</p>
+
+            <article class="message">
+              <div class="message-header">
+                <p>My Movies</p>
+                <button class="delete" aria-label="delete"></button>
+              </div>
+              <div class="message-body">
+                <textarea id="movie-list" rows="10"></textarea>
+                <br />
+                <button id="get-movies">Get Movies</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -8,6 +8,11 @@
   display: none;
 }
 
+#series-order-wrapper{
+  display: none;
+}
+
+
 /*.title {
     color: #5e42ad;
     font-size: 2rem;
