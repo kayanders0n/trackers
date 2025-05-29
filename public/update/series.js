@@ -23,10 +23,10 @@ async function loadSeriesItems(seriesId) {
       const tr = document.createElement("tr");
       tr.dataset.itemId = item.ID;
       tr.innerHTML = `
-        <td>${item.ORDERNUM}</td>
+        <td>${item.ORDERID}</td>
         <td>${item.DESCRIPT}</td>
         <td>${item.TYPE}</td>
-        <td><input class="input order-input" type="number" step="0.1" value="${item.ORDERNUM}" data-id="${item.ID}"></td>
+        <td><input class="input order-input" type="number" step="0.1" value="${item.ORDERID}" data-id="${item.ID}"></td>
       `;
       tbody.appendChild(tr);
     }
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const itemId = parseInt(input.dataset.id);
       const newOrder = parseFloat(input.value);
       if (!isNaN(itemId) && !isNaN(newOrder)) {
-        updates.push({ id: itemId, ordernum: newOrder });
+        updates.push({ id: itemId, orderid: newOrder });
       }
     });
 

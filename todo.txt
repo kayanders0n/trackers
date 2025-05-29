@@ -1,0 +1,48 @@
+home
+|---- build up to make visually appealing
+
+/insert
+|---- /movies
+      |---- display movie title somewhere after movie is entered
+      |         keeps context of platform adding
+      |---- possibly change visual of this
+                add movie form, then display a table below with movie added
+                    include a button at the right of movie to (edit)
+                    As user adds more movies, continue adding to list of movies in table
+/update
+|---- /platforms
+       
+
+MOVIE PLATFORM TO-DO LIST
+==========================
+
+COMPLETED / WORKING
+--------------------
+[x] Movie insertion (/api/addMovie)
+[x] Series selection/insertion (including “New Series” logic)
+[x] Platform dropdown loading (/api/platform)
+[x] Movie list display (/api/movies)
+[x] Platform reordering (drag and drop UI)
+[x] Save platforms logic (/api/update-movie-platforms)
+[x] Cancel button clears form (clearForm())
+[x] Platform table refresh from /api/movie-platforms
+[x] Drag handles functional with SortableJS
+[x] Removed unused /api/addPlatform route
+
+IN PROGRESS / NEXT STEPS
+-------------------------
+[ ] Test that platform order persists correctly in the database after saving
+[ ] Ensure "Add Platform" duplicate check is working properly (already present in UI)
+[ ] Improve user-facing error handling (currently logs to console or uses alert)
+[ ] Optional: Add support for editing existing movies
+      - UI to select/load a movie
+      - Populating the form with movie data
+      - Update logic instead of insert
+[ ] Optional: Integrate genre functionality into the same tab or as a next feature
+
+NOT YET IMPLEMENTED (OPTIONAL IDEAS)
+-------------------------------------
+[ ] Additional form validation (e.g., correct date formats, run time logic)
+[ ] Standardize how new IDs are returned from insert queries
+[ ] Search/filter/sort functionality for the movie list
+[ ] Full CRUD for movies or platforms (update/delete)

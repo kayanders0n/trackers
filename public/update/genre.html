@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insert Movie</title>
+    <link rel="stylesheet" href="../assets/css/index.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+    <script src="../assets/js/index.js" defer></script>
+    <script src="../update/genre.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Hero Section with Tabs -->
+    <div id="hero-placeholder"></div>
+
+    <!-- Page Content -->
+    <section class="section">
+      <div class="columns">
+        <div class="column is-half">
+          <!-- Series Selector -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Select Movie</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control has-icons-right">
+                  <input class="input" type="text" id="movie-search" placeholder="Start typing a movie name..." />
+                  <span class="icon is-right">
+                    <i class="fas fa-search" />
+                  </span>
+                </div>
+                <div class="dropdown" id="movie-dropdown" style="width: 100%">
+                  <div class="dropdown-menu" role="menu" style="width: 100%">
+                    <div class="dropdown-content" id="movie-results">
+                      <!-- Filtered options will appear here -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Add Genre Section -->
+          <div class="field is-grouped">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="genre-select">
+                  <!-- Options will be populated dynamically -->
+                </select>
+              </div>
+            </div>
+            <div class="control">
+              <button class="button is-primary" id="add-genre-button">Add Genre</button>
+            </div>
+          </div>
+          <!-- Table -->
+          <table class="table is-fullwidth is-striped" id="movie-genre-table">
+            <thead>
+              <tr>                
+                <th class="is-narrow has-text-centered">Reorder</th>
+                <th class="is-narrow has-text-centered">Order</th>
+                <th>Genre</th>
+                <th class="is-narrow has-text-centered">Remove</th>
+              </tr>
+            </thead>
+            <tbody id="movie-genre-body">
+              <!-- Rows will be added here -->
+            </tbody>
+          </table>
+          <!-- Buttons -->
+          <div class="buttons">
+            <a class="button is-link is-soft" id="save-button">Save Changes</a>
+            <a class="button is-danger is-soft" id="cancel-button">Cancel</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

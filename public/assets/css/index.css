@@ -1,23 +1,36 @@
 /* Your custom styles can go here */
 
-#series-dropdown-wrapper {
-  display: none;
+td,
+th {
+  vertical-align: middle; /* Aligns content vertically in the cell */
 }
 
-#new-series-wrapper {
-  display: none;
+th.is-narrow,
+td.is-narrow {
+  text-align: center;     /* Center text horizontally */
+  vertical-align: middle; /* Center text vertically */
+  width: 1%;              /* Helps keep narrow width */
+  white-space: nowrap;    /* Prevents wrapping */
 }
 
-#series-order-wrapper{
-  display: none;
+.drag-cell,
+.order-cell,
+.remove-cell {
+  text-align: center;
 }
 
+.drag-cell .drag-handle,
+.order-cell .order-value,
+.remove-cell button {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
 
-/*.title {
-    color: #5e42ad;
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }*/
+.drag-handle {
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}

@@ -24,7 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const heroFile = section ? `${base}components/hero-${section}.html` : null;
 
   // Load navbar
-  includeHTML("#navbar-placeholder", `${base}components/navbar.html`);
+  includeHTML("#navbar-placeholder", `${base}components/navbar.html`, () => {
+    // Burger nav toggle (runs after navbar loads)
+    const burger = document.querySelector(".navbar-burger");
+    const menu = document.getElementById("navbar-basic-example");
+    if (burger && menu) {
+      burger.addEventListener("click", () => {
+        burger.classList.toggle("is-active");
+        menu.classList.toggle("is-active");
+      });
+    }
+  });
 
   // Load hero only if a section was found
   if (heroFile) {
@@ -40,14 +50,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-
-  // Burger nav toggle
-  document.addEventListener("click", function (e) {
-    const burger = document.querySelector(".navbar-burger");
-    const menu = document.getElementById("navbar-basic-example");
-    if (burger && menu && burger.contains(e.target)) {
-      burger.classList.toggle("is-active");
-      menu.classList.toggle("is-active");
-    }
-  });
 });
