@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/index.css" />
+    <link rel="stylesheet" href="custom-bulma-dark-theme.css" />
+    <title>Simple Website</title>
+  </head>
+</html>
+
+<body>
+  <!-- Navigation Bar -->
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <p class="subtitle is-3">Media Search</p>
+      <div class="box">
+        <form id="search-form">
+          <div class="field is-grouped is-grouped-multiline is-flex-wrap-wrap">
+            <!-- Platform Input -->
+            <div class="dropdown" id="platform-dropdown">
+              <div class="dropdown-trigger">
+                <button type="button" class="button is-fullwidth is-dark has-text-left" id="platform-button" aria-haspopup="true" aria-controls="platform-menu">
+                  <span id="platform-button-text">-- Streaming Platforms --</span>
+                  <span class="icon is-small">
+                    <i class="fa-solid fa-angle-down" style="color:#4DA6FF;"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="platform-menu" role="menu">
+                <div class="dropdown-content" id="platform-options">
+                  <!-- Platform options injected here dynamically -->
+                </div>
+              </div>
+            </div>
+        
+            <!-- Type Select -->
+            <div class="dropdown" id="media-dropdown">
+              <div class="dropdown-trigger">
+                <button type="button" class="button is-fullwidth is-dark has-text-left" id="media-button" aria-haspopup="true" aria-controls="media-menu">
+                  <span id="media-button-text">-- Media Type --</span>
+                  <span class="icon is-small">
+                    <i class="fa-solid fa-angle-down" style="color:#4DA6FF;"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" role="menu">
+                <div class="dropdown-content" id="media-options">
+                  <a class="dropdown-item" data-id="">-- ALL --</a>
+                  <a class="dropdown-item" data-id="2">Movies</a>
+                  <a class="dropdown-item" data-id="3">TV Shows</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Animation Select -->
+            <div class="control">
+              <div class="select has-icons-right">
+                <select id="animation-select">
+                  <option value="">-- Style --</option>
+                  <option value="1">Animated</option>
+                  <option value="2">Live Action</option>
+                </select>
+                <span class="icon is-small is-right">
+                  <i class="fa-solid fa-angle-down"></i>
+                </span>
+              </div>
+            </div>
+        
+            <!-- Genre Select -->
+            <div class="control">
+              <div class="select has-icons-right">
+                <select id="genre-select">
+                  <!-- Populated dynamically -->
+                </select>
+                <span class="icon is-small is-right">
+                  <i class="fa-solid fa-angle-down"></i>
+                </span>
+              </div>
+            </div>
+        
+            <!-- Search Button -->
+            <div class="control">
+              <button class="button is-info" type="submit">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </section>
+  <script src="assets/js/index.js"></script>
+  <script src="assets/js/entertainment.js"></script>
+</body>
+</html>

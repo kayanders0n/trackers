@@ -1,16 +1,8 @@
-home
-|---- build up to make visually appealing
+Use bulma <button class="delete" /> instead of remove button
+Use bulma <div class="notification is-danger> <button class="delete"></button> THIS IS A NOTIFICATION </div> for any alerts to user
+Look up bulma icons for additional "notification" or "warning" or "success" or "info" messages (and many other use cases for icons)
 
-/insert
-|---- /movies
-      |---- display movie title somewhere after movie is entered
-      |         keeps context of platform adding
-      |---- possibly change visual of this
-                add movie form, then display a table below with movie added
-                    include a button at the right of movie to (edit)
-                    As user adds more movies, continue adding to list of movies in table
-/update
-|---- /platforms
+
        
 
 MOVIE PLATFORM TO-DO LIST

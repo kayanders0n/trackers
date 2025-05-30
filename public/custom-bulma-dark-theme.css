@@ -1,0 +1,134 @@
+/* Custom Bulma Dark Theme Overrides */
+
+body {
+  background-color: #3a3a42;
+  color: #EDEDED;
+}
+
+a {
+  color: #4DA6FF;
+}
+
+.title,
+.subtitle {
+  color: #EDEDED;
+}
+
+.card {
+  background-color: #2C2C34;
+  border-color: #3A3A45;
+  border-radius: 3px;
+  color: #EDEDED;
+}
+
+.button.is-primary {
+  background-color: #45A29E;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.button.is-link {
+  background-color: #4DA6FF;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.button.is-info {
+  background-color: #2D9CDB;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.button.is-success {
+  background-color: #6FCF97;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.button.is-warning {
+  background-color: #ECB836;
+  color: #1E1E24;
+  border-color: transparent;
+}
+
+.button.is-danger {
+  background-color: #EB5757;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.dropdown-item:hover,
+.dropdown-item.is-active {
+  background-color: #4DA6FF;
+  color: white;
+}
+
+.navbar {
+  background-color: #2C2C34;
+  color: #F2F2F2;
+}
+
+.navbar a.navbar-item,
+.navbar .navbar-link {
+  color: #F2F2F2;
+}
+
+.navbar a.navbar-item:hover,
+.navbar .navbar-link:hover {
+  background-color: #3A3A42;
+  color: #ffffff;
+}
+
+.navbar-dropdown {
+  background-color: #2C2C34;
+  border-color: #3A3A45;
+}
+
+.navbar-dropdown .navbar-item {
+  color: #F2F2F2;
+}
+
+.navbar-dropdown .navbar-item:hover {
+  background-color: #3A3A42;
+  color: #ffffff;
+}
+
+.navbar.is-info .navbar-item.is-active {
+  background-color: #77B4B8 !important;
+  color: #ffffff !important;
+}
+
+.navbar.is-info .navbar-item.is-active:hover {
+  background-color: #3A3A42 !important;
+  color: #ffffff !important;
+}
+
+.navbar, .footer {
+  background-color: #2C2C34;
+  color: #EDEDED;
+}
+
+.has-text-muted {
+  color: #A0A0A5 !important;
+}
+
+.input,
+.textarea,
+.select select {
+  background-color: #2C2C34;
+  color: #EDEDED;
+  border-color: #3A3A45;
+}
+
+.input:focus,
+.textarea:focus,
+.select select:focus {
+  border-color: #4DA6FF;
+  box-shadow: 0 0 0 0.125em rgba(77, 166, 255, 0.25);
+}
+
+textarea::placeholder,
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+

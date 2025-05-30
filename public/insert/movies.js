@@ -24,7 +24,6 @@ async function loadSeriesOptions() {
     // Make API request to fetch SERIES data
     const response = await fetch("/api/series");
     const data = await response.json();
-    allSeries = data;
     const dropdown = document.getElementById("series-dropdown");
 
     // Clear existing options
