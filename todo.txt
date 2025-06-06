@@ -2,39 +2,16 @@ Use bulma <button class="delete" /> instead of remove button
 Use bulma <div class="notification is-danger> <button class="delete"></button> THIS IS A NOTIFICATION </div> for any alerts to user
 Look up bulma icons for additional "notification" or "warning" or "success" or "info" messages (and many other use cases for icons)
 
-
-       
-
-MOVIE PLATFORM TO-DO LIST
-==========================
-
-COMPLETED / WORKING
---------------------
-[x] Movie insertion (/api/addMovie)
-[x] Series selection/insertion (including “New Series” logic)
-[x] Platform dropdown loading (/api/platform)
-[x] Movie list display (/api/movies)
-[x] Platform reordering (drag and drop UI)
-[x] Save platforms logic (/api/update-movie-platforms)
-[x] Cancel button clears form (clearForm())
-[x] Platform table refresh from /api/movie-platforms
-[x] Drag handles functional with SortableJS
-[x] Removed unused /api/addPlatform route
-
-IN PROGRESS / NEXT STEPS
--------------------------
-[ ] Test that platform order persists correctly in the database after saving
-[ ] Ensure "Add Platform" duplicate check is working properly (already present in UI)
-[ ] Improve user-facing error handling (currently logs to console or uses alert)
-[ ] Optional: Add support for editing existing movies
-      - UI to select/load a movie
-      - Populating the form with movie data
-      - Update logic instead of insert
-[ ] Optional: Integrate genre functionality into the same tab or as a next feature
-
-NOT YET IMPLEMENTED (OPTIONAL IDEAS)
--------------------------------------
-[ ] Additional form validation (e.g., correct date formats, run time logic)
-[ ] Standardize how new IDs are returned from insert queries
-[ ] Search/filter/sort functionality for the movie list
-[ ] Full CRUD for movies or platforms (update/delete)
+TO-DO
+=============
+[x] Add to genre table ISENTERTAINMENT, ISBOOKS int columns so we can narrow down genre lists
+[ ] Add to modal:
+    [x] Media Type dropdown so user can select if movie/tv
+    [x] Wrapers for series need to work
+        [x] remove ALL option from modal media types. Select movie or tv show only.
+    [ ] Submit button needs to add title/series
+    [ ] Bring up Media Modal after Submit
+[ ] Build Media Modal (show title details, including series, genres, etc)
+[x] Clicking on title brings up media modal
+[ ] Finish sort order on table
+[ ] Add website link to platforms

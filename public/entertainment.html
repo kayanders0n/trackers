@@ -4,96 +4,335 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-..."
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="assets/css/index.css" />
     <link rel="stylesheet" href="custom-bulma-dark-theme.css" />
     <title>Simple Website</title>
   </head>
-</html>
 
-<body>
-  <!-- Navigation Bar -->
-  <div id="navbar-placeholder"></div>
+  <body>
+    <!-- === Navigation Bar Placeholder === -->
+    <div id="navbar-placeholder"></div>
 
-  <section class="section">
-    <div class="container">
-      <p class="subtitle is-3">Media Search</p>
-      <div class="box">
-        <form id="search-form">
-          <div class="field is-grouped is-grouped-multiline is-flex-wrap-wrap">
-            <!-- Platform Input -->
-            <div class="dropdown" id="platform-dropdown">
-              <div class="dropdown-trigger">
-                <button type="button" class="button is-fullwidth is-dark has-text-left" id="platform-button" aria-haspopup="true" aria-controls="platform-menu">
-                  <span id="platform-button-text">-- Streaming Platforms --</span>
-                  <span class="icon is-small">
-                    <i class="fa-solid fa-angle-down" style="color:#4DA6FF;"></i>
-                  </span>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="platform-menu" role="menu">
-                <div class="dropdown-content" id="platform-options">
-                  <!-- Platform options injected here dynamically -->
+    <section class="section">
+      <div class="container">
+        <p class="subtitle is-3">Media Search</p>
+        <div class="box">
+          <form id="search-form">
+            <div class="field is-grouped is-grouped-multiline is-flex is-flex-wrap-wrap" style="width: 100%; align-items: flex-start">
+              <!-- === Platform Dropdown === -->
+              <div class="dropdown" id="platform-dropdown">
+                <div class="dropdown-trigger">
+                  <button
+                    type="button"
+                    class="button is-fullwidth is-dark has-text-left"
+                    id="platform-button"
+                    aria-haspopup="true"
+                    aria-controls="platform-menu"
+                  >
+                    <span id="platform-button-text">-- Streaming Platforms --</span>
+                    <span class="icon is-small">
+                      <i class="fa-solid fa-angle-down" style="color: #75b8bb"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="platform-menu" role="menu">
+                  <div class="dropdown-content" id="platform-options">
+                    <!-- Platform options injected here dynamically -->
+                  </div>
                 </div>
               </div>
-            </div>
-        
-            <!-- Type Select -->
-            <div class="dropdown" id="media-dropdown">
-              <div class="dropdown-trigger">
-                <button type="button" class="button is-fullwidth is-dark has-text-left" id="media-button" aria-haspopup="true" aria-controls="media-menu">
-                  <span id="media-button-text">-- Media Type --</span>
-                  <span class="icon is-small">
-                    <i class="fa-solid fa-angle-down" style="color:#4DA6FF;"></i>
-                  </span>
-                </button>
-              </div>
-              <div class="dropdown-menu" role="menu">
-                <div class="dropdown-content" id="media-options">
-                  <a class="dropdown-item" data-id="">-- ALL --</a>
-                  <a class="dropdown-item" data-id="2">Movies</a>
-                  <a class="dropdown-item" data-id="3">TV Shows</a>
+
+              <!-- === Media Type Dropdown === -->
+              <div class="dropdown" id="media-dropdown">
+                <div class="dropdown-trigger">
+                  <button
+                    type="button"
+                    class="button is-fullwidth is-dark has-text-left"
+                    id="media-button"
+                    aria-haspopup="true"
+                    aria-controls="media-menu"
+                  >
+                    <span id="media-button-text">-- Media Type --</span>
+                    <span class="icon is-small">
+                      <i class="fa-solid fa-angle-down" style="color: #75b8bb"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" role="menu">
+                  <div class="dropdown-content" id="media-options">
+                    <a class="dropdown-item" data-id="">-- ALL --</a>
+                    <a class="dropdown-item" data-id="2">Movies</a>
+                    <a class="dropdown-item" data-id="3">TV Shows</a>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Animation Select -->
-            <div class="control">
-              <div class="select has-icons-right">
-                <select id="animation-select">
-                  <option value="">-- Style --</option>
-                  <option value="1">Animated</option>
-                  <option value="2">Live Action</option>
-                </select>
-                <span class="icon is-small is-right">
-                  <i class="fa-solid fa-angle-down"></i>
-                </span>
+              <!-- === Style Dropdown === -->
+              <div class="dropdown" id="style-dropdown">
+                <div class="dropdown-trigger">
+                  <button
+                    type="button"
+                    class="button is-fullwidth is-dark has-text-left"
+                    id="style-button"
+                    aria-haspopup="true"
+                    aria-controls="style-menu"
+                  >
+                    <span id="style-button-text">-- Style --</span>
+                    <span class="icon is-small">
+                      <i class="fa-solid fa-angle-down" style="color: #75b8bb"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" role="menu">
+                  <div class="dropdown-content" id="style-options">
+                    <a class="dropdown-item" data-id="">-- All --</a>
+                    <a class="dropdown-item" data-id="1">Animated</a>
+                    <a class="dropdown-item" data-id="2">Live Action</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- === Genre Dropdown === -->
+              <div class="dropdown" id="genre-dropdown">
+                <div class="dropdown-trigger">
+                  <button
+                    type="button"
+                    class="button is-fullwidth is-dark has-text-left"
+                    id="genre-button"
+                    aria-haspopup="true"
+                    aria-controls="genre-menu"
+                  >
+                    <span id="genre-button-text">-- Genre --</span>
+                    <span class="icon is-small">
+                      <i class="fa-solid fa-angle-down" style="color: #75b8bb"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="genre-menu" role="menu">
+                  <div class="dropdown-content" id="genre-options">
+                    <!-- genre options injected here dynamically -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- === Search Button === -->
+              <div class="control">
+                <button class="button is-primary" type="submit" id="search-button">Search</button>
+              </div>
+
+              <!-- === Add Title Button === -->
+              <div class="control" style="margin-left: auto">
+                <button class="button is-success js-modal-trigger" type="button" data-target="add-title-modal">Add Title</button>
               </div>
             </div>
-        
-            <!-- Genre Select -->
-            <div class="control">
-              <div class="select has-icons-right">
-                <select id="genre-select">
-                  <!-- Populated dynamically -->
-                </select>
-                <span class="icon is-small is-right">
-                  <i class="fa-solid fa-angle-down"></i>
-                </span>
-              </div>
-            </div>
-        
-            <!-- Search Button -->
-            <div class="control">
-              <button class="button is-info" type="submit">Search</button>
-            </div>
+          </form>
+        </div>
+
+        <!-- === Table === -->
+        <div id="items-table-wrapper" class="is-hidden">
+          <div class="box">
+            <table class="table is-fullwidth is-striped" id="items-table">
+              <thead>
+                <tr>
+                  <th data-sort="DESCRIPT" class="sortable">Title</th>
+                  <th data-sort="TYPENAME" class="sortable is-narrow has-text-centered">Type</th>
+                  <th data-sort="FIRSTRELEASE" class="sortable is-narrow has-text-centered">Release Date</th>
+                  <th data-sort="LENGTH" class="sortable is-narrow has-text-centered">Run Time</th>
+                </tr>
+              </thead>
+              <tbody id="items-body">
+                <!-- Rows will be added here -->
+              </tbody>
+            </table>
           </div>
-        </form>
+        </div>
+
+        <!--- === Add Title Modal === -->
+        <div class="modal" id="add-title-modal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Add New Title</p>
+              <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+              <form id="add-title-form">
+                <!-- Media Type -->
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label" for="modal-media-button">Media Type</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="dropdown is-fullwidth" id="modal-media-dropdown">
+                        <div class="dropdown-trigger">
+                          <button
+                            type="button"
+                            class="button is-fullwidth is-dark has-text-left"
+                            id="modal-media-button"
+                            aria-haspopup="true"
+                            aria-controls="modal-media-menu"
+                          >
+                            <span id="modal-media-button-text">-- Media Type --</span>
+                            <span class="icon is-small">
+                              <i class="fa-solid fa-angle-down" style="color: #75b8bb"></i>
+                            </span>
+                          </button>
+                        </div>
+                        <div class="dropdown-menu" role="menu">
+                          <div class="dropdown-content" id="modal-media-options">
+                            <a class="dropdown-item" data-id="2">Movies</a>
+                            <a class="dropdown-item" data-id="3">TV Shows</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>                
+
+                <!-- Title -->
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label" for="title-input">Title</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <input class="input" id="title-input" type="text" placeholder="Title" required autocomplete="off" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Release Date -->
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label" for="release-date-input">Release Date</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <input class="input" id="release-date-input" type="text" placeholder="Release Date" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Runtime -->
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label" for="run-time-hours-input">Run Time</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control is-narrow">
+                        <input class="input is-narrow" id="run-time-hours-input" type="number" placeholder="0" />
+                      </p>
+                      <p class="help custom-light-theme-help-text">Hours</p>
+                    </div>
+                    <div class="field">
+                      <p class="control is-narrow">
+                        <input class="input" id="run-time-minutes-input" type="number" placeholder="0" />
+                      </p>
+                      <p class="help custom-light-theme-help-text">Minutes</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Series Checkbox -->
+                <div id="is-series-wrapper" aria-hidden="true" class="is-hidden">
+                  <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                      <label class="label" for="series-checkbox">Series?</label>
+                    </div>
+                    <div class="field-body">
+                      <div class="column is-one-fifth">
+                        <div class="field is-narrow">
+                          <div class="control">
+                            <label class="checkbox custom-light-theme-help-text">
+                              <input type="checkbox" id="series-checkbox" />
+                              Yes
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="column is-four-fifths">
+                        <div id="series-dropdown-wrapper" aria-hidden="true" class="is-hidden">
+                          <div class="field is-horizontal">
+                            <div class="field-label">
+                              <label class="label" for="series-dropdown">Series Name</label>
+                            </div>
+                            <div class="field-body">
+                              <div class="select is-fullwidth">
+                                <select id="series-dropdown"></select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- New Series Name -->
+                  <div id="new-series-wrapper" aria-hidden="true" class="is-hidden">
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="new-series-input">Series Name</label>
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <input class="input" id="new-series-input" type="text" placeholder="Series Name" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Series Order -->
+                  <div id="series-order-wrapper" aria-hidden="true" class="is-hidden">
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="order-number-input">Place in Series</label>
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <input class="input" id="order-number-input" type="number" placeholder="0" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-success" type="submit" id="save-title-btn" form="add-title-form">Save</button>
+              <button class="button is-danger" id="cancel-title-btn">Cancel</button>
+            </footer>
+          </div>
+        </div>
+
+        <!--- === Current Title Modal === -->
+        <div class="modal" id="current-title-modal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Current Title</p>
+              <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+              
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-danger" id="close-current-title-btn">Close</button>
+            </footer>
+          </div>
+        </div>
       </div>
-      
-    </div>
-  </section>
-  <script src="assets/js/index.js"></script>
-  <script src="assets/js/entertainment.js"></script>
-</body>
+    </section>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script src="assets/js/entertainment.js" defer></script>
+  </body>
 </html>

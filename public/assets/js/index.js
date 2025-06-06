@@ -1,51 +1,49 @@
-// Utility to load HTML partials
-async function includeHTML(selector, file, callback) {
-  const el = document.querySelector(selector);
-  if (el) {
+// === Load external HTML into target element ===
+async function includeHTML(targetSelector, filePath, callback) {
+  const targetEl = document.querySelector(targetSelector);
+  if (targetEl) {
     try {
-      const res = await fetch(file);
+      const res = await fetch(filePath);
       const html = await res.text();
-      el.innerHTML = html;
-      if (callback) callback(); // <-- run callback after insert
+      targetEl.innerHTML = html;
+      if (callback) callback(); // Run callback after HTML is inserted
     } catch (err) {
-      el.innerHTML = "<!-- failed to load component: " + file + " -->";
+      targetEl.innerHTML = "<!-- failed to load component: " + filePath + " -->";
     }
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const path = window.location.pathname;
+  // === Get path and section info from URL ===
+  const currentPath = window.location.pathname;
+  const sectionMatch = currentPath.match(/^\/([^/]+)\//);
+  const sectionName = sectionMatch ? sectionMatch[1] : null;
 
-  // Get the top-level folder
-  const match = path.match(/^\/([^/]+)\//);
-  const section = match ? match[1] : null;
+  // === Set relative path for includes ===
+  const basePath = sectionName ? "../" : "";
+  const heroPath = sectionName ? `${basePath}components/hero-${sectionName}.html` : null;
 
-  const base = section ? "../" : "";
-  const heroFile = section ? `${base}components/hero-${section}.html` : null;
-
-  // Load navbar
-  includeHTML("#navbar-placeholder", `${base}components/navbar.html`, () => {
-    // Burger nav toggle (runs after navbar loads)
-    const burger = document.querySelector(".navbar-burger");
-    const menu = document.getElementById("navbar-basic-example");
-    if (burger && menu) {
-      burger.addEventListener("click", () => {
-        burger.classList.toggle("is-active");
-        menu.classList.toggle("is-active");
+  // === Load navbar and activate burger toggle ===
+  includeHTML("#navbar-placeholder", `${basePath}components/navbar.html`, () => {
+    const burgerBtn = document.querySelector(".navbar-burger");
+    const menuEl = document.getElementById("navbar-basic-example");
+    if (burgerBtn && menuEl) {
+      burgerBtn.addEventListener("click", () => {
+        burgerBtn.classList.toggle("is-active");
+        menuEl.classList.toggle("is-active");
       });
     }
   });
 
-  // Load hero only if a section was found
-  if (heroFile) {
-    includeHTML("#hero-placeholder", heroFile, () => {
-      // Highlight the correct tab (if tabs exist in this hero)
-      document.querySelectorAll(".hero .tabs a").forEach(link => {
-        const href = link.getAttribute("href");
-        if (path.endsWith(href)) {
-          link.parentElement.classList.add("is-active");
+  // === Load hero section (if available) and highlight active tab ===
+  if (heroPath) {
+    includeHTML("#hero-placeholder", heroPath, () => {
+      document.querySelectorAll(".hero .tabs a").forEach(tabLink => {
+        const tabHref = tabLink.getAttribute("href");
+        if (path.endsWith(tabHref)) {
+          tabLink.parentElement.classList.add("is-active");
         } else {
-          link.parentElement.classList.remove("is-active");
+          tabLink.parentElement.classList.remove("is-active");
         }
       });
     });

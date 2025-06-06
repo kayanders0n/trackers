@@ -9,9 +9,17 @@ a {
   color: #4DA6FF;
 }
 
+.custom-light-theme-help-text {
+  color: #8b8b8b !important; /* Adjust this to your preferred light color */
+}
+
 .title,
 .subtitle {
   color: #EDEDED;
+}
+
+.title.is-primary {
+  color: #75B8BB;
 }
 
 .card {
@@ -22,9 +30,15 @@ a {
 }
 
 .button.is-primary {
-  background-color: #45A29E;
+  background-color: #75B8BB;
   color: #ffffff;
   border-color: transparent;
+}
+
+.button.is-primary:hover {
+  background-color: #74C4C8;
+  border-color: #74C4C8;
+  color: #ffffff;
 }
 
 .button.is-link {
@@ -59,7 +73,7 @@ a {
 
 .dropdown-item:hover,
 .dropdown-item.is-active {
-  background-color: #4DA6FF;
+  background-color: #75B8BB;
   color: white;
 }
 
@@ -94,7 +108,7 @@ a {
 }
 
 .navbar.is-info .navbar-item.is-active {
-  background-color: #77B4B8 !important;
+  background-color: #75B8BB !important;
   color: #ffffff !important;
 }
 
