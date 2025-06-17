@@ -15,3 +15,7 @@ TO-DO
 [x] Clicking on title brings up media modal
 [ ] Finish sort order on table
 [ ] Add website link to platforms
+[x] Change database to show TITLE instead of ITEM
+    [ ] Edit all js to show TITLE instead of ITEM
+    [ ] Also keep in mind LENGTH was changed to CONTENT_SIZE
+    [ ] Also check to make sure node-firebird.js and node-firebird-driver-native.js are properly pulling from db
