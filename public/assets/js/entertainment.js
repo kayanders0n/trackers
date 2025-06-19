@@ -3,7 +3,7 @@ let selectedPlatformId = null;
 let selectedMediaId = "";
 let selectedStyleId = "";
 let selectedGenreId = null;
-let allItems = [];
+let allTitles = [];
 let selectedModalMediaId = "";
 
 // === Load All Platforms into Dropdown ===
@@ -104,32 +104,32 @@ function setupDropdown(triggerId, dropdownId) {
 }
 
 // === Display Titles using Sort Order ===
-function renderItemsTable(data) {
-  const tbody = document.getElementById("items-body");
+function renderTitlesTable(data) {
+  const tbody = document.getElementById("titles-body");
   tbody.innerHTML = "";
 
-  for (const item of data) {
-    const releaseDate = item.FIRSTRELEASE
-      ? new Date(item.FIRSTRELEASE).toLocaleDateString("en-US", {
+  for (const title of data) {
+    const releaseDate = title.FIRSTRELEASE
+      ? new Date(title.FIRSTRELEASE).toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
           day: "numeric",
         })
       : "";
-    const itemLength = formatLength(item.LENGTH);
+    const titleLength = formatLength(title.CONTENT_SIZE);
 
     const tr = document.createElement("tr");
-    tr.dataset.movieId = item.ID;
+    tr.dataset.movieId = title.ID;
     tr.innerHTML = `
-      <td>${item.DESCRIPT}</td>
-      <td class="has-text-centered">${item.TYPENAME}</td>
+      <td>${title.DESCRIPT}</td>
+      <td class="has-text-centered">${title.TYPENAME}</td>
       <td class="has-text-centered">${releaseDate}</td>
-      <td class="has-text-centered">${itemLength}</td>
+      <td class="has-text-centered">${titleLength}</td>
     `;
 
     // Add double-click event
     tr.addEventListener("dblclick", () => {
-      openTitleModal(item);
+      openTitleModal(title);
     });
 
     tbody.appendChild(tr);
@@ -137,22 +137,22 @@ function renderItemsTable(data) {
 }
 
 // === Get Titles ===
-async function loadItems(platformID, mediaID, styleID, genreID) {
+async function loadTitles(platformID, mediaID, styleID, genreID) {
   try {
     const response = await fetch(
-      `/api/getItems?platformID=${platformID ?? ""}&mediaID=${mediaID ?? ""}&styleID=${styleID ?? ""}&genreID=${genreID ?? ""}`
+      `/api/getTitles?platformID=${platformID ?? ""}&mediaID=${mediaID ?? ""}&styleID=${styleID ?? ""}&genreID=${genreID ?? ""}`
     );
     const data = await response.json();
-    allItems = data;
-    renderItemsTable(allItems);
+    allTitles = data;
+    renderTitlesTable(allTitles);
   } catch (error) {
-    console.error("Failed to load items:", error);
+    console.error("Failed to load titles:", error);
   }
 }
 
-// === SortAndRenderItems ===
-function sortAndRenderItems(items, sortBy, direction = "asc") {
-  const sorted = [...items].sort((a, b) => {
+// === SortAndRenderTitles ===
+function sortAndRenderTitles(titles, sortBy, direction = "asc") {
+  const sorted = [...titles].sort((a, b) => {
     let valA = a[sortBy];
     let valB = b[sortBy];
 
@@ -172,11 +172,11 @@ function sortAndRenderItems(items, sortBy, direction = "asc") {
     return 0;
   });
 
-  renderItemsTable(sorted); // redraw the table
+  renderTitlesTable(sorted); // redraw the table
 }
 
 // == Open Title Modal ===
-async function openTitleModal(item) {
+async function openTitleModal(title) {
   const modal = document.getElementById("current-title-modal");
   const modalBody = modal.querySelector(".modal-card-body");
   modalBody.innerHTML = "";
@@ -187,14 +187,14 @@ async function openTitleModal(item) {
   content.innerHTML = `
     <div style="overflow: hidden;">
       <img 
-        src="/assets/images/${item.IMAGEFILE}" 
-        alt="${item.DESCRIPT}" 
+        src="/assets/images/${title.IMAGEFILE}" 
+        alt="${title.DESCRIPT}" 
         style="float: right; margin: 0 0 1rem 1rem; max-width: 150px; height: auto; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" 
       />
-      <h2 class="title is-4 is-primary">${item.DESCRIPT}</h2>
-      <p><strong>Type:</strong> ${item.TYPENAME}</p>
-      <p><strong>Release Date:</strong> ${item.FIRSTRELEASE ? new Date(item.FIRSTRELEASE).toLocaleDateString() : "N/A"}</p>
-      <p><strong>Run Time:</strong> ${formatLength(item.LENGTH)}</p>
+      <h2 class="title is-4 is-primary">${title.DESCRIPT}</h2>
+      <p><strong>Type:</strong> ${title.TYPENAME}</p>
+      <p><strong>Release Date:</strong> ${title.FIRSTRELEASE ? new Date(title.FIRSTRELEASE).toLocaleDateString() : "N/A"}</p>
+      <p><strong>Run Time:</strong> ${formatLength(title.CONTENT_SIZE)}</p>
       <p><strong>Genres:</strong> <span class="genre-list">Loading...</span></p>
       <p><strong>Platforms:</strong> <span class="platform-list">Loading...</span></p>
       <p><strong>Series:</strong> <span class="series-list">Loading...</span></p>
@@ -207,43 +207,43 @@ async function openTitleModal(item) {
   // Get Genres
   const genreSpan = content.querySelector(".genre-list");
   try {
-    const genreResponse = await fetch(`/api/getItemGenres?itemID=${item.ID}`);
+    const genreResponse = await fetch(`/api/getTitleGenres?titleID=${title.ID}`);
     const genreData = await genreResponse.json();
     const genreNames = genreData.length > 0 ? genreData.map((g) => g.DESCRIPT).join(", ") : "None listed";
     genreSpan.innerHTML = genreNames;
   } catch (error) {
-    console.error("Failed to load item genres:", error);
+    console.error("Failed to load title genres:", error);
     genreSpan.innerHTML = "Error loading genres";
   }
 
   // Get Platforms
   const platformSpan = content.querySelector(".platform-list");
   try {
-    const platformResponse = await fetch(`/api/getItemPlatforms?itemID=${item.ID}`);
+    const platformResponse = await fetch(`/api/getTitlePlatforms?titleID=${title.ID}`);
     const platformData = await platformResponse.json();
     const platformNames = platformData.length > 0 ? platformData.map((g) => g.DESCRIPT).join(", ") : "None listed";
     platformSpan.innerHTML = platformNames;
   } catch (error) {
-    console.error("Failed to load item platforms:", error);
+    console.error("Failed to load title platforms:", error);
     platformSpan.innerHTML = "Error loading platforms";
   }
 
   // Get Series
   const seriesSpan = content.querySelector(".series-list");
   try {
-    const seriesResponse = await fetch(`/api/getItemSeries?itemID=${item.ID}`);
+    const seriesResponse = await fetch(`/api/getTitleSeries?titleID=${title.ID}`);
     const seriesData = await seriesResponse.json();
     const seriesNames = seriesData.length > 0 ? seriesData.map((g) => g.DESCRIPT).join(", ") : "None listed";
     seriesSpan.innerHTML = seriesNames;
   } catch (error) {
-    console.error("Failed to load item series:", error);
+    console.error("Failed to load title series:", error);
     seriesSpan.innerHTML = "Error loading series";
   }
 }
 
 // === Setup Event Listeners After DOM Loads ===
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("items-table-wrapper").classList.add("is-hidden");
+  document.getElementById("titles-table-wrapper").classList.add("is-hidden");
   loadAllPlatforms(); // Load platforms into dropdown at startup
   loadAllGenres(); // Load genres into dropdown at startup
 
@@ -371,8 +371,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const styleID = selectedStyleId;
     const genreID = selectedGenreId;
     console.log("Search button clicked. Platform ID:", platformID, "Media ID:", mediaID, "Style ID:", styleID, "Genre ID:", genreID);
-    loadItems(platformID, mediaID, styleID, genreID);
-    document.getElementById("items-table-wrapper").classList.remove("is-hidden");
+    loadTitles(platformID, mediaID, styleID, genreID);
+    document.getElementById("titles-table-wrapper").classList.remove("is-hidden");
 
     document.querySelectorAll("th.sortable").forEach((header) => {
       header.addEventListener("click", () => {
@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
           currentSort.direction = "asc";
         }
 
-        sortAndRenderItems(allItems, sortBy, currentSort.direction);
+        sortAndRenderTitles(allTitles, sortBy, currentSort.direction);
       });
     });
   });

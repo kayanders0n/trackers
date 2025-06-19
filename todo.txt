@@ -19,3 +19,9 @@ TO-DO
     [ ] Edit all js to show TITLE instead of ITEM
     [ ] Also keep in mind LENGTH was changed to CONTENT_SIZE
     [ ] Also check to make sure node-firebird.js and node-firebird-driver-native.js are properly pulling from db
+
+
+TITLES UPDATE:
+==============
+entertainment.js (for the webpage js)
+[ ] 

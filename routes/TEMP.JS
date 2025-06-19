@@ -5,8 +5,13 @@
 // GOING TO ADD THESE BACK INTO ENTERTAINMENT.JS WHEN READY - NOT ALL AT ONCE.
 
 
+// --- TITLE QUERIES ---
 
+// DONE
+// API route to fetch Items from Firebird
+//router.get("/getItems", async (req, res) => {
 
+// TODO 
 // API route to add a new movie to Firebird
 router.post("/insertMovie", async (req, res) => {
   const { movieTitle, releaseDate, runTimeTotalMin, seriesID, orderNum } = req.body;
@@ -46,65 +51,68 @@ router.post("/insertMovie", async (req, res) => {
 
 // --- GENRE QUERIES ---
 
+// DONE 
 // API route to fetch movies from Firebird
-router.get("/getGenres", async (req, res) => {
-  try {
-    const Firebird = await getFirebirdClient();
-    if (!Firebird) {
-      return res.status(500).json({ error: "Failed to connect to Firebird" });
-    }
+// router.get("/getGenres", async (req, res) => {
+//   try {
+//     const Firebird = await getFirebirdClient();
+//     if (!Firebird) {
+//       return res.status(500).json({ error: "Failed to connect to Firebird" });
+//     }
 
-    // Runs the query
-    Firebird.query(
-      "SELECT ID, DESCRIPT FROM GENRE WHERE ISENTERTAINMENT=1 ORDER BY DESCRIPT",
-      // Callback function -- handles the response
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: err.message });
-        }
+//     // Runs the query
+//     Firebird.query(
+//       "SELECT ID, DESCRIPT FROM GENRE WHERE ISENTERTAINMENT=1 ORDER BY DESCRIPT",
+//       // Callback function -- handles the response
+//       (err, result) => {
+//         if (err) {
+//           return res.status(500).json({ error: err.message });
+//         }
 
-        res.json(result);
-        Firebird.detach();
-      }
-    );
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+//         res.json(result);
+//         Firebird.detach();
+//       }
+//     );
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
+// DONE 
 // API route to fetch genres for selected title from Firebird
-router.get("/getItemGenres", async (req, res) => {
-  const itemID = parseInt(req.query.itemID); // <-- grab from URL
+// router.get("/getItemGenres", async (req, res) => {
+//   const itemID = parseInt(req.query.itemID); // <-- grab from URL
 
-  if (isNaN(itemID)) {
-    return res.status(400).json({ error: "Missing itemID" });
-  }
+//   if (isNaN(itemID)) {
+//     return res.status(400).json({ error: "Missing itemID" });
+//   }
 
-  try {
-    const Firebird = await getFirebirdClient();
-    if (!Firebird) {
-      return res.status(500).json({ error: "Failed to connect to Firebird" });
-    }
+//   try {
+//     const Firebird = await getFirebirdClient();
+//     if (!Firebird) {
+//       return res.status(500).json({ error: "Failed to connect to Firebird" });
+//     }
 
-    // Runs the query
-    Firebird.query(
-      "SELECT ITEMGENRE.ITEMID, ITEMGENRE.GENREID, ITEMGENRE.ORDERID, GENRE.DESCRIPT FROM ITEMGENRE LEFT OUTER JOIN GENRE ON (ITEMGENRE.GENREID = GENRE.ID) WHERE ITEMGENRE.ITEMID = ? ORDER BY ITEMGENRE.ORDERID",
-      [itemID], // Pass value safely into query
-      // Callback function -- handles the response
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: err.message });
-        }
+//     // Runs the query
+//     Firebird.query(
+//       "SELECT ITEMGENRE.ITEMID, ITEMGENRE.GENREID, ITEMGENRE.ORDERID, GENRE.DESCRIPT FROM ITEMGENRE LEFT OUTER JOIN GENRE ON (ITEMGENRE.GENREID = GENRE.ID) WHERE ITEMGENRE.ITEMID = ? ORDER BY ITEMGENRE.ORDERID",
+//       [itemID], // Pass value safely into query
+//       // Callback function -- handles the response
+//       (err, result) => {
+//         if (err) {
+//           return res.status(500).json({ error: err.message });
+//         }
 
-        res.json(result);
-        Firebird.detach();
-      }
-    );
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+//         res.json(result);
+//         Firebird.detach();
+//       }
+//     );
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
+// TODO 
 // API route to update the genres for a movie
 router.post("/updateMovieGenres", async (req, res) => {
   const updates = req.body.updates;
@@ -204,6 +212,7 @@ router.post("/updateMovieGenres", async (req, res) => {
 
 // --- SERIES QUERIES ---
 
+// TODO 
 // API route to fetch series from Firebird
 router.get("/getSeries", async (req, res) => {
   const Firebird = await getFirebirdClient();
@@ -221,39 +230,41 @@ router.get("/getSeries", async (req, res) => {
   });
 });
 
+// DONE 
 // API route to fetch series of title from Firebird
-router.get("/getItemSeries", async (req, res) => {
-  const itemID = parseInt(req.query.itemID); // <-- grab from URL
+// router.get("/getItemSeries", async (req, res) => {
+//   const itemID = parseInt(req.query.itemID); // <-- grab from URL
 
-  if (isNaN(itemID)) {
-    return res.status(400).json({ error: "Missing itemID" });
-  }
+//   if (isNaN(itemID)) {
+//     return res.status(400).json({ error: "Missing itemID" });
+//   }
 
-  try {
-    const Firebird = await getFirebirdClient();
-    if (!Firebird) {
-      return res.status(500).json({ error: "Failed to connect to Firebird" });
-    }
+//   try {
+//     const Firebird = await getFirebirdClient();
+//     if (!Firebird) {
+//       return res.status(500).json({ error: "Failed to connect to Firebird" });
+//     }
 
-    // Runs the query
-    Firebird.query(
-      "SELECT ITEM.SERIESID, SERIES.DESCRIPT FROM ITEM LEFT OUTER JOIN SERIES ON (ITEM.SERIESID = SERIES.ID) WHERE ITEM.ID = ? ORDER BY SERIES.DESCRIPT",
-      [itemID], // Pass value safely into query
-      // Callback function -- handles the response
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: err.message });
-        }
+//     // Runs the query
+//     Firebird.query(
+//       "SELECT ITEM.SERIESID, SERIES.DESCRIPT FROM ITEM LEFT OUTER JOIN SERIES ON (ITEM.SERIESID = SERIES.ID) WHERE ITEM.ID = ? ORDER BY SERIES.DESCRIPT",
+//       [itemID], // Pass value safely into query
+//       // Callback function -- handles the response
+//       (err, result) => {
+//         if (err) {
+//           return res.status(500).json({ error: err.message });
+//         }
 
-        res.json(result);
-        Firebird.detach();
-      }
-    );
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+//         res.json(result);
+//         Firebird.detach();
+//       }
+//     );
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
+// TODO 
 // API route to add a new series to Firebird
 router.post("/insertSeries", async (req, res) => {
   const { newSeriesName } = req.body;
@@ -284,6 +295,7 @@ router.post("/insertSeries", async (req, res) => {
   });
 });
 
+// TODO 
 // API route to fetch movies in selected series from Firebird
 router.get("/getMoviesInSeries", async (req, res) => {
   const seriesId = parseInt(req.query.seriesId); // <-- grab from URL
@@ -317,6 +329,7 @@ router.get("/getMoviesInSeries", async (req, res) => {
   }
 });
 
+// TODO 
 // API route to update the order of items in a series
 router.post("/updateMovieOrder", async (req, res) => {
   const updates = req.body.updates;
@@ -351,56 +364,59 @@ router.post("/updateMovieOrder", async (req, res) => {
 
 // --- STREAMING PLATFORM QUERIES ---
 
+// DONE 
 // API route to fetch streaming platforms from Firebird
-router.get("/getPlatforms", async (req, res) => {
-  const Firebird = await getFirebirdClient();
-  if (!Firebird) {
-    return res.status(500).json({ error: "Failed to connect to Firebird" });
-  }
+// router.get("/getPlatforms", async (req, res) => {
+//   const Firebird = await getFirebirdClient();
+//   if (!Firebird) {
+//     return res.status(500).json({ error: "Failed to connect to Firebird" });
+//   }
 
-  Firebird.query("SELECT ID, DESCRIPT FROM ENTITY WHERE TYPEID = 4 ORDER BY DESCRIPT", (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+//   Firebird.query("SELECT ID, DESCRIPT FROM ENTITY WHERE TYPEID = 4 ORDER BY DESCRIPT", (err, result) => {
+//     if (err) {
+//       return res.status(500).json({ error: err.message });
+//     }
 
-    res.json(result);
-    Firebird.detach();
-  });
-});
+//     res.json(result);
+//     Firebird.detach();
+//   });
+// });
 
+// DONE 
 // API route to fetch platforms for selected titles from Firebird
-router.get("/getItemPlatforms", async (req, res) => {
-  const itemID = parseInt(req.query.itemID); // <-- grab from URL
+// router.get("/getItemPlatforms", async (req, res) => {
+//   const itemID = parseInt(req.query.itemID); // <-- grab from URL
 
-  if (isNaN(itemID)) {
-    return res.status(400).json({ error: "Missing itemID" });
-  }
+//   if (isNaN(itemID)) {
+//     return res.status(400).json({ error: "Missing itemID" });
+//   }
 
-  try {
-    const Firebird = await getFirebirdClient();
-    if (!Firebird) {
-      return res.status(500).json({ error: "Failed to connect to Firebird" });
-    }
+//   try {
+//     const Firebird = await getFirebirdClient();
+//     if (!Firebird) {
+//       return res.status(500).json({ error: "Failed to connect to Firebird" });
+//     }
 
-    // Runs the query
-    Firebird.query(
-      "SELECT PLATFORM.ITEMID, PLATFORM.ENTITYID, PLATFORM.ORDERID, ENTITY.DESCRIPT FROM PLATFORM LEFT OUTER JOIN ENTITY ON (PLATFORM.ENTITYID = ENTITY.ID) WHERE PLATFORM.ITEMID = ? ORDER BY PLATFORM.ORDERID",
-      [itemID], // Pass value safely into query
-      // Callback function -- handles the response
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: err.message });
-        }
+//     // Runs the query
+//     Firebird.query(
+//       "SELECT PLATFORM.ITEMID, PLATFORM.ENTITYID, PLATFORM.ORDERID, ENTITY.DESCRIPT FROM PLATFORM LEFT OUTER JOIN ENTITY ON (PLATFORM.ENTITYID = ENTITY.ID) WHERE PLATFORM.ITEMID = ? ORDER BY PLATFORM.ORDERID",
+//       [itemID], // Pass value safely into query
+//       // Callback function -- handles the response
+//       (err, result) => {
+//         if (err) {
+//           return res.status(500).json({ error: err.message });
+//         }
 
-        res.json(result);
-        Firebird.detach();
-      }
-    );
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+//         res.json(result);
+//         Firebird.detach();
+//       }
+//     );
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
+// TODO 
 // API route to update the genres for a movie
 router.post("/updateMoviePlatforms", async (req, res) => {
   const updates = req.body.updates;
