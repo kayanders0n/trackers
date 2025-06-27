@@ -2,24 +2,32 @@ Use bulma <button class="delete" /> instead of remove button
 Use bulma <div class="notification is-danger> <button class="delete"></button> THIS IS A NOTIFICATION </div> for any alerts to user
 Look up bulma icons for additional "notification" or "warning" or "success" or "info" messages (and many other use cases for icons)
 
+=============
 TO-DO
 =============
+[ ] Add Title modal:
+    [ ] Submit button needs to add title/series
+        [ ] use bulma <div class="notification"> after submit OR error (see above)
+    [ ] Bring up Media Modal after Submit
+    [ ] Don't forget to make is-series checkbox different color and series dropdown arrow different color
+    [ ] I think save and cancel buttons also need to change color
+[ ] Media Modal
+    [ ] If no file (image) then don't try to display it.
+    [ ] include link to website platform (attempt link straight to title)
+    [ ] If no series, show "None listed" just like genres shows
+[ ] Finish sort order on table
+[ ] Add website link to platforms
+
+=============
+DONE
+=============
 [x] Add to genre table ISENTERTAINMENT, ISBOOKS int columns so we can narrow down genre lists
-[ ] Add to Media Modal:
+[ ] Add Title modal:
     [x] Media Type dropdown so user can select if movie/tv
     [x] Wrapers for series need to work
         [x] remove ALL option from modal media types. Select movie or tv show only.
-    [ ] Submit button needs to add title/series
-    [ ] Bring up Media Modal after Submit
-    [ ] If no file (image) then don't try to display it.
-[ ] Add Title modal:
-    [ ] Don't forget to make is-series checkbox different color and series dropdown arrow different color
-    [ ] I think save and cancel buttons also need to change color
-[ ] Build Media Modal (show title details, including series, genres, etc)
 [x] Clicking on title brings up media modal
-[ ] Finish sort order on table
-[ ] Add website link to platforms
 [x] Change database to show TITLE instead of ITEM
-    [ ] Edit all js to show TITLE instead of ITEM
-    [ ] Also keep in mind LENGTH was changed to CONTENT_SIZE
-    [ ] Also check to make sure node-firebird.js and node-firebird-driver-native.js are properly pulling from db
+    [x] Edit all js to show TITLE instead of ITEM
+    [x] Also keep in mind LENGTH was changed to CONTENT_SIZE
+    [x] Also check to make sure node-firebird.js and node-firebird-driver-native.js are properly pulling from db
