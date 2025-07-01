@@ -3,6 +3,7 @@ let selectedPlatformId = null;
 let selectedMediaId = "";
 let selectedStyleId = "";
 let selectedGenreId = null;
+let selectedSeriesNameId = null;
 let allTitles = [];
 let selectedModalMediaId = "";
 
@@ -91,6 +92,62 @@ async function loadAllGenres() {
     }
   } catch (error) {
     console.error("Failed to load genres:", error);
+  }
+}
+
+async function loadSeriesOptions() {
+  try {
+    const response = await fetch("/api/getSeries");
+    const data = await response.json();
+    const seriesNameOptions = document.getElementById("series-name-options");
+
+    // Clear existing options
+    seriesNameOptions.innerHTML = "";
+
+    // Add default prompt option
+    const defaultOption = document.createElement("a");
+    defaultOption.className = "dropdown-item is-unselectable has-text-grey";
+    defaultOption.dataset.id = "";
+    defaultOption.textContent = "-- Series Name --";
+    defaultOption.addEventListener("click", (e) => {
+      e.preventDefault(); // Do nothing
+    });
+    seriesNameOptions.appendChild(defaultOption);
+
+    // Always add the "New Series" option first
+    const newOption = document.createElement("a");
+    newOption.className = "dropdown-item";
+    newOption.dataset.id = "new";
+    newOption.textContent = "-- New Series --";
+    newOption.addEventListener("click", () => {
+      document.getElementById("series-name-button-text").textContent = "-- New Series --";
+      document.getElementById("series-name-dropdown").classList.remove("is-active");
+      selectedSeriesNameId = "new";
+      document.getElementById("new-series-wrapper").classList.remove("is-hidden");
+      seriesNameOptions.querySelectorAll(".dropdown-item").forEach((i) => i.classList.remove("is-active"));
+      newOption.classList.add("is-active");
+    });
+    seriesNameOptions.appendChild(newOption);
+
+    // Add existing series from database
+    for (const series of data) {
+      const option = document.createElement("a");
+      option.className = "dropdown-item";
+      option.dataset.id = series.ID;
+      option.textContent = series.DESCRIPT;
+      option.addEventListener("click", () => {
+        document.getElementById("series-name-button-text").textContent = series.DESCRIPT;
+        document.getElementById("series-name-dropdown").classList.remove("is-active");
+        selectedSeriesNameId = series.ID;
+        document.getElementById("new-series-wrapper").classList.add("is-hidden");
+        document.getElementById("new-series-input").value = "";
+        seriesNameOptions.querySelectorAll(".dropdown-item").forEach((i) => i.classList.remove("is-active"));
+        option.classList.add("is-active");
+      });
+      seriesNameOptions.appendChild(option);
+    }
+  } catch (error) {
+    console.error("Failed to load series:", error);
   }
 }
 
@@ -246,18 +303,21 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("titles-table-wrapper").classList.add("is-hidden");
   loadAllPlatforms(); // Load platforms into dropdown at startup
   loadAllGenres(); // Load genres into dropdown at startup
+  loadSeriesOptions(); // Load series into dropdown at startup
 
   const platformDropdown = document.getElementById("platform-dropdown");
   const mediaDropdown = document.getElementById("media-dropdown");
   const styleDropdown = document.getElementById("style-dropdown");
   const genreDropdown = document.getElementById("genre-dropdown");
   const modalMediaDropdown = document.getElementById("modal-media-dropdown");
+  const seriesDropdown = document.getElementById("series-name-dropdown");
 
   setupDropdown("platform-button", "platform-dropdown");
   setupDropdown("media-button", "media-dropdown");
   setupDropdown("style-button", "style-dropdown");
   setupDropdown("genre-button", "genre-dropdown");
   setupDropdown("modal-media-button", "modal-media-dropdown");
+  setupDropdown("series-name-button", "series-name-dropdown");
 
   const mediaOptions = document.querySelectorAll("#media-options .dropdown-item");
   const styleOptions = document.querySelectorAll("#style-options .dropdown-item");
@@ -266,7 +326,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const isSeriesWrapper = document.getElementById("is-series-wrapper");
   const seriesCheckbox = document.getElementById("series-checkbox");
   const seriesDropdownWrapper = document.getElementById("series-dropdown-wrapper");
-  const seriesDropdown = document.getElementById("series-dropdown");
   const newSeriesWrapper = document.getElementById("new-series-wrapper");
   const seriesOrderWrapper = document.getElementById("series-order-wrapper");
 
@@ -328,9 +387,13 @@ document.addEventListener("DOMContentLoaded", () => {
       seriesDropdownWrapper.classList.add("is-hidden");
       seriesOrderWrapper.classList.add("is-hidden");
       newSeriesWrapper.classList.add("is-hidden");
-      seriesDropdown.value = "";
       document.getElementById("new-series-input").value = "";
       document.getElementById("order-number-input").value = "";
+      document.getElementById("series-name-button-text").textContent = "-- Series Name --";
+      selectedSeriesNameId = null;
+      document.querySelectorAll("#series-name-options .dropdown-item").forEach((i) => {
+        i.classList.remove("is-active");
+      });
     }
   });
 
@@ -360,6 +423,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (!modalMediaDropdown.contains(event.target)) {
       modalMediaDropdown.classList.remove("is-active");
+    }
+    if (!seriesDropdown.contains(event.target)) {
+      seriesDropdown.classList.remove("is-active");
     }
   });
 
@@ -406,7 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Close buttons
-  document.querySelectorAll(".modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button.is-danger").forEach(($el) => {
+  document.querySelectorAll(".modal-background, .modal-close, .modal-card-head .delete").forEach(($el) => {
     const $modal = $el.closest(".modal");
     $el.addEventListener("click", () => closeModal($modal));
   });

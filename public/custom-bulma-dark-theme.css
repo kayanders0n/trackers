@@ -77,6 +77,11 @@ a {
   color: white;
 }
 
+.dropdown-item.is-unselectable {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
 .navbar {
   background-color: #2C2C34;
   color: #F2F2F2;
@@ -146,3 +151,6 @@ input::placeholder {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
+input[type="checkbox"]:checked {
+  accent-color: #75B8BB;
+}

@@ -9,7 +9,6 @@ TO-DO
     [ ] Submit button needs to add title/series
         [ ] use bulma <div class="notification"> after submit OR error (see above)
     [ ] Bring up Media Modal after Submit
-    [ ] Don't forget to make is-series checkbox different color and series dropdown arrow different color
     [ ] I think save and cancel buttons also need to change color
 [ ] Media Modal
     [ ] If no file (image) then don't try to display it.
@@ -17,6 +16,9 @@ TO-DO
     [ ] If no series, show "None listed" just like genres shows
 [ ] Finish sort order on table
 [ ] Add website link to platforms
+[ ] Redo navbar
+
+[ ] User log (add users to db, add ability for user to track what movies they watch and when and ratings)
 
 =============
 DONE
@@ -26,6 +28,7 @@ DONE
     [x] Media Type dropdown so user can select if movie/tv
     [x] Wrapers for series need to work
         [x] remove ALL option from modal media types. Select movie or tv show only.
+    [x] Don't forget to make is-series checkbox different color and series dropdown arrow different color
 [x] Clicking on title brings up media modal
 [x] Change database to show TITLE instead of ITEM
     [x] Edit all js to show TITLE instead of ITEM

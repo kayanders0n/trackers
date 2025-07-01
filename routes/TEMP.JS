@@ -212,23 +212,23 @@ router.post("/updateMovieGenres", async (req, res) => {
 
 // --- SERIES QUERIES ---
 
-// TODO 
+// DONE 
 // API route to fetch series from Firebird
-router.get("/getSeries", async (req, res) => {
-  const Firebird = await getFirebirdClient();
-  if (!Firebird) {
-    return res.status(500).json({ error: "Failed to connect to Firebird" });
-  }
+// router.get("/getSeries", async (req, res) => {
+//   const Firebird = await getFirebirdClient();
+//   if (!Firebird) {
+//     return res.status(500).json({ error: "Failed to connect to Firebird" });
+//   }
 
-  Firebird.query("SELECT ID, DESCRIPT FROM SERIES ORDER BY DESCRIPT", (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+//   Firebird.query("SELECT ID, DESCRIPT FROM SERIES ORDER BY DESCRIPT", (err, result) => {
+//     if (err) {
+//       return res.status(500).json({ error: err.message });
+//     }
 
-    res.json(result);
-    Firebird.detach();
-  });
-});
+//     res.json(result);
+//     Firebird.detach();
+//   });
+// });
 
 // DONE 
 // API route to fetch series of title from Firebird

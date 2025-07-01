@@ -243,7 +243,7 @@
                 </div>
 
                 <!-- Series Checkbox -->
-                <div id="is-series-wrapper" aria-hidden="true" class="is-hidden">
+                <div id="is-series-wrapper" class="is-hidden">
                   <div class="field is-horizontal">
                     <div class="field-label is-normal">
                       <label class="label" for="series-checkbox">Series?</label>
@@ -260,24 +260,36 @@
                         </div>
                       </div>
                       <div class="column is-four-fifths">
-                        <div id="series-dropdown-wrapper" aria-hidden="true" class="is-hidden">
-                          <div class="field is-horizontal">
-                            <div class="field-label">
-                              <label class="label" for="series-dropdown">Series Name</label>
+                        <div id="series-dropdown-wrapper" class="is-hidden">
+
+                          <div class="dropdown" id="series-name-dropdown">
+                            <div class="dropdown-trigger">
+                              <button
+                                type="button"
+                                class="button is-fullwidth is-dark has-text-left"
+                                id="series-name-button"
+                                aria-haspopup="true"
+                                aria-controls="series-name-menu"
+                              >
+                                <span id="series-name-button-text">-- Series Name --</span>
+                                <span class="icon is-small">
+                                  <i class="fa-solid fa-angle-down" style="color: #75b8bb"></i>
+                                </span>
+                              </button>
                             </div>
-                            <div class="field-body">
-                              <div class="select is-fullwidth">
-                                <select id="series-dropdown"></select>
+                            <div class="dropdown-menu" id="series-name-menu" role="menu">
+                              <div class="dropdown-content" id="series-name-options">
+                                <!-- genre options injected here dynamically -->
                               </div>
                             </div>
-                          </div>
+                          </div>                          
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <!-- New Series Name -->
-                  <div id="new-series-wrapper" aria-hidden="true" class="is-hidden">
+                  <div id="new-series-wrapper" class="is-hidden">
                     <div class="field is-horizontal">
                       <div class="field-label is-normal">
                         <label class="label" for="new-series-input">Series Name</label>
@@ -291,7 +303,7 @@
                   </div>
 
                   <!-- Series Order -->
-                  <div id="series-order-wrapper" aria-hidden="true" class="is-hidden">
+                  <div id="series-order-wrapper" class="is-hidden">
                     <div class="field is-horizontal">
                       <div class="field-label is-normal">
                         <label class="label" for="order-number-input">Place in Series</label>
@@ -306,9 +318,11 @@
                 </div>
               </form>
             </section>
-            <footer class="modal-card-foot">
-              <button class="button is-success" type="submit" id="save-title-btn" form="add-title-form">Save</button>
-              <button class="button is-danger" id="cancel-title-btn">Cancel</button>
+            <footer class="modal-card-foot is-right">
+              <div class="buttons has-addons is-right">
+                <button class="button is-success" type="submit" id="save-title-btn" form="add-title-form">Save</button>
+                <button class="button is-danger" id="clear-title-btn">Clear</button>
+              </div>
             </footer>
           </div>
         </div>
