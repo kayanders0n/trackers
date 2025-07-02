@@ -82,6 +82,11 @@ a {
   opacity: 0.6;
 }
 
+.modal .dropdown-content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 .navbar {
   background-color: #2C2C34;
   color: #F2F2F2;

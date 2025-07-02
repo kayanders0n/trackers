@@ -25,7 +25,7 @@
         <p class="subtitle is-3">Media Search</p>
         <div class="box">
           <form id="search-form">
-            <div class="field is-grouped is-grouped-multiline is-flex is-flex-wrap-wrap" style="width: 100%; align-items: flex-start">
+            <div class="field is-grouped is-grouped-multiline is-flex is-flex-wrap-wrap">
               <!-- === Platform Dropdown === -->
               <div class="dropdown" id="platform-dropdown">
                 <div class="dropdown-trigger">
@@ -128,7 +128,7 @@
               </div>
 
               <!-- === Add Title Button === -->
-              <div class="control" style="margin-left: auto">
+              <div class="control ml-auto">
                 <button class="button is-success js-modal-trigger" type="button" data-target="add-title-modal">Add Title</button>
               </div>
             </div>
@@ -195,7 +195,7 @@
                       </div>
                     </div>
                   </div>
-                </div>                
+                </div>
 
                 <!-- Title -->
                 <div class="field is-horizontal">
@@ -205,6 +205,63 @@
                   <div class="field-body">
                     <div class="field">
                       <input class="input" id="title-input" type="text" placeholder="Title" required autocomplete="off" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Series Checkbox -->
+                <div id="is-series-wrapper" class="is-hidden">
+                  <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                      <label class="label" for="series-checkbox">Series?</label>
+                    </div>
+                    <div class="field-body is-flex is-align-items-center">
+                      <div class="field is-narrow mr-4">
+                        <label class="checkbox custom-light-theme-help-text">
+                          <input type="checkbox" id="series-checkbox" />
+                          Yes
+                        </label>
+                      </div>
+
+                      <div class="field is-flex-grow-1 is-horizontal is-hidden" id="series-name-wrapper">
+                        <div class="control">
+                          <div class="dropdown is-fullwidth" id="series-name-dropdown">
+                            <div class="dropdown-trigger">
+                              <input class="input" type="text" id="series-name-input" placeholder="Start typing series name..." autocomplete="off" />
+                            </div>
+                            <div class="dropdown-menu" role="menu">
+                              <div class="dropdown-content" id="series-name-suggestions">
+                                <!-- Suggestions will appear here -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="new-series-notification" class="notification is-warning is-light is-hidden">
+                    <p>
+                      No existing series found matching "<span id="new-series-name-text"></span>".<br />
+                      Do you want to create a new series?
+                    </p>
+                    <div class="buttons mt-2">
+                      <button class="button is-small is-success" id="confirm-new-series-btn">Yes</button>
+                      <button class="button is-small is-danger" id="cancel-new-series-btn">No</button>
+                    </div>
+                  </div>
+
+                  <!-- Series Order -->
+                  <div id="series-order-wrapper" class="is-hidden">
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="order-number-input">Place in Series</label>
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <input class="input" id="order-number-input" type="number" placeholder="0" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -241,85 +298,10 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- Series Checkbox -->
-                <div id="is-series-wrapper" class="is-hidden">
-                  <div class="field is-horizontal">
-                    <div class="field-label is-normal">
-                      <label class="label" for="series-checkbox">Series?</label>
-                    </div>
-                    <div class="field-body">
-                      <div class="column is-one-fifth">
-                        <div class="field is-narrow">
-                          <div class="control">
-                            <label class="checkbox custom-light-theme-help-text">
-                              <input type="checkbox" id="series-checkbox" />
-                              Yes
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="column is-four-fifths">
-                        <div id="series-dropdown-wrapper" class="is-hidden">
-
-                          <div class="dropdown" id="series-name-dropdown">
-                            <div class="dropdown-trigger">
-                              <button
-                                type="button"
-                                class="button is-fullwidth is-dark has-text-left"
-                                id="series-name-button"
-                                aria-haspopup="true"
-                                aria-controls="series-name-menu"
-                              >
-                                <span id="series-name-button-text">-- Series Name --</span>
-                                <span class="icon is-small">
-                                  <i class="fa-solid fa-angle-down" style="color: #75b8bb"></i>
-                                </span>
-                              </button>
-                            </div>
-                            <div class="dropdown-menu" id="series-name-menu" role="menu">
-                              <div class="dropdown-content" id="series-name-options">
-                                <!-- genre options injected here dynamically -->
-                              </div>
-                            </div>
-                          </div>                          
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- New Series Name -->
-                  <div id="new-series-wrapper" class="is-hidden">
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label class="label" for="new-series-input">Series Name</label>
-                      </div>
-                      <div class="field-body">
-                        <div class="field">
-                          <input class="input" id="new-series-input" type="text" placeholder="Series Name" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Series Order -->
-                  <div id="series-order-wrapper" class="is-hidden">
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label class="label" for="order-number-input">Place in Series</label>
-                      </div>
-                      <div class="field-body">
-                        <div class="field">
-                          <input class="input" id="order-number-input" type="number" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </form>
             </section>
-            <footer class="modal-card-foot is-right">
-              <div class="buttons has-addons is-right">
+            <footer class="modal-card-foot is-flex is-justify-content-flex-end">
+              <div class="buttons has-addons">
                 <button class="button is-success" type="submit" id="save-title-btn" form="add-title-form">Save</button>
                 <button class="button is-danger" id="clear-title-btn">Clear</button>
               </div>
@@ -335,9 +317,7 @@
               <p class="modal-card-title">Current Title</p>
               <button class="delete" aria-label="close"></button>
             </header>
-            <section class="modal-card-body">
-              
-            </section>
+            <section class="modal-card-body"></section>
             <footer class="modal-card-foot">
               <button class="button is-danger" id="close-current-title-btn">Close</button>
             </footer>

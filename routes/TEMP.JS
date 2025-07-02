@@ -11,43 +11,43 @@
 // API route to fetch Items from Firebird
 //router.get("/getItems", async (req, res) => {
 
-// TODO 
+// DONE 
 // API route to add a new movie to Firebird
-router.post("/insertMovie", async (req, res) => {
-  const { movieTitle, releaseDate, runTimeTotalMin, seriesID, orderNum } = req.body;
+// router.post("/insertMovie", async (req, res) => {
+//   const { movieTitle, releaseDate, runTimeTotalMin, seriesID, orderNum } = req.body;
 
-  if (!movieTitle) {
-    return res.status(400).json({ error: "Title is required" });
-  }
+//   if (!movieTitle) {
+//     return res.status(400).json({ error: "Title is required" });
+//   }
 
-  const Firebird = await getFirebirdClient();
-  if (!Firebird) {
-    return res.status(500).json({ error: "Failed to connect to Firebird" });
-  }
+//   const Firebird = await getFirebirdClient();
+//   if (!Firebird) {
+//     return res.status(500).json({ error: "Failed to connect to Firebird" });
+//   }
 
-  const query = seriesID
-    ? "INSERT INTO ITEM (TYPEID, UOMID, DESCRIPT, FIRSTRELEASE, LENGTH, SERIESID, ORDERID) VALUES (2, 2, ?, ?, ?, ?, ?)"
-    : "INSERT INTO ITEM (TYPEID, UOMID, DESCRIPT, FIRSTRELEASE, LENGTH) VALUES (2, 2, ?, ?, ?)";
+//   const query = seriesID
+//     ? "INSERT INTO ITEM (TYPEID, UOMID, DESCRIPT, FIRSTRELEASE, LENGTH, SERIESID, ORDERID) VALUES (2, 2, ?, ?, ?, ?, ?)"
+//     : "INSERT INTO ITEM (TYPEID, UOMID, DESCRIPT, FIRSTRELEASE, LENGTH) VALUES (2, 2, ?, ?, ?)";
 
-  const params = seriesID ? [movieTitle, releaseDate, runTimeTotalMin, seriesID, orderNum] : [movieTitle, releaseDate, runTimeTotalMin];
+//   const params = seriesID ? [movieTitle, releaseDate, runTimeTotalMin, seriesID, orderNum] : [movieTitle, releaseDate, runTimeTotalMin];
 
-  // Runs the query
-  Firebird.query(query, params, (err) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+//   // Runs the query
+//   Firebird.query(query, params, (err) => {
+//     if (err) {
+//       return res.status(500).json({ error: err.message });
+//     }
 
-    // Now fetch the max ID
-    Firebird.query("SELECT MAX(ID) AS ID FROM ITEM", (err2, result) => {
-      if (err2) {
-        return res.status(500).json({ error: err2.message });
-      }
+//     // Now fetch the max ID
+//     Firebird.query("SELECT MAX(ID) AS ID FROM ITEM", (err2, result) => {
+//       if (err2) {
+//         return res.status(500).json({ error: err2.message });
+//       }
 
-      res.json({ ID: result[0].ID });
-      Firebird.detach();
-    });
-  });
-});
+//       res.json({ ID: result[0].ID });
+//       Firebird.detach();
+//     });
+//   });
+// });
 
 // --- GENRE QUERIES ---
 
@@ -264,36 +264,36 @@ router.post("/updateMovieGenres", async (req, res) => {
 //   }
 // });
 
-// TODO 
+// DONE 
 // API route to add a new series to Firebird
-router.post("/insertSeries", async (req, res) => {
-  const { newSeriesName } = req.body;
+// router.post("/insertSeries", async (req, res) => {
+//   const { newSeriesName } = req.body;
 
-  if (!newSeriesName) {
-    return res.status(400).json({ error: "Series Name is required" });
-  }
+//   if (!newSeriesName) {
+//     return res.status(400).json({ error: "Series Name is required" });
+//   }
 
-  const Firebird = await getFirebirdClient();
-  if (!Firebird) {
-    return res.status(500).json({ error: "Failed to connect to Firebird" });
-  }
+//   const Firebird = await getFirebirdClient();
+//   if (!Firebird) {
+//     return res.status(500).json({ error: "Failed to connect to Firebird" });
+//   }
 
-  Firebird.query("INSERT INTO SERIES (DESCRIPT) VALUES (?)", [newSeriesName], (err) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+//   Firebird.query("INSERT INTO SERIES (DESCRIPT) VALUES (?)", [newSeriesName], (err) => {
+//     if (err) {
+//       return res.status(500).json({ error: err.message });
+//     }
 
-    // Now fetch the max ID
-    Firebird.query("SELECT MAX(ID) AS ID FROM SERIES", (err2, result) => {
-      if (err2) {
-        return res.status(500).json({ error: err2.message });
-      }
+//     // Now fetch the max ID
+//     Firebird.query("SELECT MAX(ID) AS ID FROM SERIES", (err2, result) => {
+//       if (err2) {
+//         return res.status(500).json({ error: err2.message });
+//       }
 
-      res.json({ ID: result[0].ID });
-      Firebird.detach();
-    });
-  });
-});
+//       res.json({ ID: result[0].ID });
+//       Firebird.detach();
+//     });
+//   });
+// });
 
 // TODO 
 // API route to fetch movies in selected series from Firebird
