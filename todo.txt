@@ -20,6 +20,18 @@ TO-DO
 
 [ ] User log (add users to db, add ability for user to track what movies they watch and when and ratings)
 
+[ ] Media Modal EDITING (suggestion from chatGPT)
+    [ ] Approach: Add an Edit button inside the existing title modal. When clicked, it: 
+            Replaces display fields with form fields (e.g., genre tags become multi-select, text becomes input fields).
+            Shows "Save / Cancel" buttons at the bottom.
+        Visual example:
+        [ Title:  ██████████████         ]    ⎯ Input field
+        [ Type:   ▼ Movie                ]    ⎯ Dropdown
+        [ Genres: [x] Drama [x] Comedy   ]    ⎯ Tags with checkboxes
+        [ Platforms: ▼ Netflix, Prime    ]    ⎯ Multi-select
+
+        [ Save Changes ]  [ Cancel ]
+
 =============
 DONE
 =============

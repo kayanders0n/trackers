@@ -334,7 +334,8 @@ async function openTitleModal(title) {
   try {
     const seriesResponse = await fetch(`/api/getSeriesByTitleId?titleId=${title.ID}`);
     const seriesData = await seriesResponse.json();
-    const seriesNames = seriesData.length > 0 ? seriesData.map((g) => g.DESCRIPT).join(", ") : "None listed";
+    const validSeries = seriesData.filter((g) => g.DESCRIPT != null);
+    const seriesNames = validSeries.length > 0 ? validSeries.map((g) => g.DESCRIPT).join(", ") : "None listed";
     seriesSpan.innerHTML = seriesNames;
   } catch (error) {
     console.error("Failed to load title series:", error);
@@ -363,11 +364,11 @@ async function addSeries(newSeriesName) {
 
 async function addTitle(title, typeId, releaseDate, runTimeTotalMin, seriesId, orderNum) {
   try {
-    const payload = {
+    const data = {
       title,
       typeId,
       releaseDate,
-      runTime: runTimeTotalMin,
+      runTimeTotalMin,
       seriesId,
       orderNum,
     };
@@ -375,7 +376,7 @@ async function addTitle(title, typeId, releaseDate, runTimeTotalMin, seriesId, o
     const res = await fetch("/api/addTitle", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(data),
     });
 
     if (!res.ok) throw new Error("Failed to insert title");
@@ -417,6 +418,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const seriesNameWrapper = document.getElementById("series-name-wrapper");
   const seriesOrderWrapper = document.getElementById("series-order-wrapper");
 
+  const seriesNameInput = document.getElementById("series-name-input");
+  const orderNumberInput = document.getElementById("order-number-input");
+  const currentTitleModal = document.getElementById("current-title-modal");
+  const addTitleForm = document.getElementById("add-title-form");
+
   let currentSort = { column: null, direction: "asc" };
 
   // === Media item selection ===
@@ -455,11 +461,11 @@ document.addEventListener("DOMContentLoaded", () => {
         isSeriesWrapper.classList.remove("is-hidden");
       } else {
         isSeriesWrapper.classList.add("is-hidden");
-        document.getElementById("series-checkbox").checked = false;
+        seriesCheckbox.checked = false;
         seriesNameWrapper.classList.add("is-hidden");
-        document.getElementById("series-name-input").value = "";
+        seriesNameInput.value = "";
         seriesOrderWrapper.classList.add("is-hidden");
-        document.getElementById("order-number-input").value = "";
+        orderNumberInput.value = "";
         selectedSeriesNameId = null;
       }
     });
@@ -472,9 +478,9 @@ document.addEventListener("DOMContentLoaded", () => {
       seriesOrderWrapper.classList.remove("is-hidden");
     } else {
       seriesNameWrapper.classList.add("is-hidden");
-      document.getElementById("series-name-input").value = "";
+      seriesNameInput.value = "";
       seriesOrderWrapper.classList.add("is-hidden");
-      document.getElementById("order-number-input").value = "";
+      orderNumberInput.value = "";
       selectedSeriesNameId = null;
     }
   });
@@ -552,25 +558,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("close-current-title-btn").addEventListener("click", () => {
-    document.getElementById("current-title-modal").classList.remove("is-active");
+    currentTitleModal.classList.remove("is-active");
   });
 
   document.querySelector("#current-title-modal .delete").addEventListener("click", () => {
-    document.getElementById("current-title-modal").classList.remove("is-active");
+    currentTitleModal.classList.remove("is-active");
   });
 
   // === Add Title Modal Logic ===
   // Save Button
-  document.getElementById("add-title-form").addEventListener("submit", async (e) => {
+  addTitleForm.addEventListener("submit", async (e) => {
     e.preventDefault(); // Prevent page reload
     const title = document.getElementById("title-input").value.trim();
     const releaseDate = document.getElementById("release-date-input").value.trim(); // you may format this
     const hours = parseInt(document.getElementById("run-time-hours-input").value) || 0;
     const minutes = parseInt(document.getElementById("run-time-minutes-input").value) || 0;
     const runTimeTotalMin = hours * 60 + minutes;
-    const orderNum = document.getElementById("order-number-input").value.trim();
-    const inputSeriesName = document.getElementById("series-name-input").value.trim();
+    const orderNum = orderNumberInput.value.trim();
+    const inputSeriesName = seriesNameInput.value.trim();
+
     if (!title) return;
+
     let finalSeriesId = selectedSeriesNameId;
 
     if (seriesCheckbox.checked && inputSeriesName && !finalSeriesId) {
@@ -578,13 +586,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const result = await addTitle(title, selectedModalMediaId, releaseDate, runTimeTotalMin, finalSeriesId, orderNum);
-
-    if (result) {
-      closeModal(document.getElementById("add-title-modal"));
-      document.getElementById("add-title-form").reset();
-      selectedSeriesNameId = null;
-      openTitleModal(result);
-    }
 
     console.log(
       "Type: ",
@@ -598,9 +599,18 @@ document.addEventListener("DOMContentLoaded", () => {
       " - series id: ",
       finalSeriesId,
       " - sort order: ",
-      document.getElementById("order-number-input").value,
-      " - date: __ignore for now __",
-      " - run time: __ignore for now__"
+      orderNumberInput.value,
+      " - date: ", releaseDate,
+      " - run time: ", runTimeTotalMin
     );
+
+    if (result) {
+      closeModal(document.getElementById("add-title-modal"));
+      addTitleForm.reset();
+      selectedSeriesNameId = null;
+      const titleResponse = await fetch(`/api/getTitleById?titleID=${result.ID}`);
+      const fullTitle = await titleResponse.json();
+      openTitleModal(fullTitle);
+    }
   });
 });

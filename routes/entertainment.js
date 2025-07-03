@@ -6,10 +6,10 @@ const getFirebirdClient = require("../lib/node-firebird");
 
 // API route to fetch Titles from Firebird
 router.get("/getTitlesBySearch", async (req, res) => {
-  const platformID  = parseInt(req.query.platformID);
-  const typeID      = parseInt(req.query.mediaID);
-  const styleID     = parseInt(req.query.styleID);
-  const genreID     = parseInt(req.query.genreID);
+  const platformId  = parseInt(req.query.platformId);
+  const typeId      = parseInt(req.query.mediaId);
+  const styleId     = parseInt(req.query.styleId);
+  const genreId     = parseInt(req.query.genreId);
 
   try {
     const Firebird = await getFirebirdClient();
@@ -28,32 +28,32 @@ router.get("/getTitlesBySearch", async (req, res) => {
     const params = [];
 
     // TYPEID: default to (2, 3) if null
-    if (!isNaN(typeID)) {
+    if (!isNaN(typeId)) {
       sql += ` AND TITLE.TYPEID = ?`;
-      params.push(typeID);
+      params.push(typeId);
     } else {
       sql += ` AND TITLE.TYPEID IN (2, 3)`;
     }
 
-    // PLATFORM: only filter if platformID is provided
-    if (!isNaN(platformID)) {
+    // PLATFORM: only filter if platformId is provided
+    if (!isNaN(platformId)) {
       sql += `
         AND EXISTS (
           SELECT 1 FROM PLATFORM WHERE TITLEID = TITLE.ID AND ENTITYID = ?
         )
       `;
-      params.push(platformID);
+      params.push(platformId);
     }
 
-    // STYLE: Animated = genreID 3 must exist
-    if (styleID === 1) {
+    // STYLE: Animated = genreId 3 must exist
+    if (styleId === 1) {
       sql += `
         AND EXISTS (
           SELECT 1 FROM TITLEGENRE WHERE TITLEID = TITLE.ID AND GENREID = 3
         )
       `;
-    } else if (styleID === 2) {
-      // Live Action = genreID 3 must NOT exist
+    } else if (styleId === 2) {
+      // Live Action = genreId 3 must NOT exist
       sql += `
         AND NOT EXISTS (
           SELECT 1 FROM TITLEGENRE WHERE TITLEID = TITLE.ID AND GENREID = 3
@@ -62,13 +62,13 @@ router.get("/getTitlesBySearch", async (req, res) => {
     }
 
     // GENREID: only filter if provided
-    if (!isNaN(genreID)) {
+    if (!isNaN(genreId)) {
       sql += `
         AND EXISTS (
           SELECT 1 FROM TITLEGENRE WHERE TITLEID = TITLE.ID AND GENREID = ?
         )
       `;
-      params.push(genreID);
+      params.push(genreId);
     }
 
     sql += ` ORDER BY TITLE.DESCRIPT, TYPECODES.DESCRIPT, TITLE.FIRSTRELEASE NULLS LAST`;
@@ -88,9 +88,9 @@ router.get("/getTitlesBySearch", async (req, res) => {
 
 // API route to fetch Titles from Firebird
 router.get("/getTitleById", async (req, res) => {
-  const titleID = parseInt(req.query.titleID); // <-- grab from URL
+  const titleId = parseInt(req.query.titleId); // <-- grab from URL
 
-  if (isNaN(titleID)) {
+  if (isNaN(titleId)) {
     return res.status(400).json({ error: "Missing titleID" });
   }
 
@@ -103,7 +103,7 @@ router.get("/getTitleById", async (req, res) => {
     // Runs the query
     Firebird.query(
       "SELECT TITLE.ID, TITLE.DESCRIPT, TYPECODES.DESCRIPT AS TYPENAME, TITLE.FIRSTRELEASE, TITLE.CONTENT_SIZE, TITLE.IMAGEFILE FROM TITLE LEFT OUTER JOIN TYPECODES ON (TITLE.TYPEID = TYPECODES.ID) WHERE TITLE.ID = ?",
-      [titleID], // Pass value safely into query
+      [titleId], // Pass value safely into query
       // Callback function -- handles the response
       (err, result) => {
         if (err) {
@@ -121,7 +121,7 @@ router.get("/getTitleById", async (req, res) => {
 
 // API route to add a new Title to Firebird
 router.post("/addTitle", async (req, res) => {
-  const { title, typeID, releaseDate, runTimeTotalMin, seriesID, orderNum } = req.body;
+  const { title, typeId, releaseDate, runTimeTotalMin, seriesId, orderNum } = req.body;
 
   if (!title) {
     return res.status(400).json({ error: "Title is required" });
@@ -132,11 +132,11 @@ router.post("/addTitle", async (req, res) => {
     return res.status(500).json({ error: "Failed to connect to Firebird" });
   }
 
-  const query = seriesID
+  const query = seriesId
     ? "INSERT INTO TITLE (UOMID, TYPEID, DESCRIPT, FIRSTRELEASE, CONTENT_SIZE, SERIESID, ORDERID) VALUES (2, ?, ?, ?, ?, ?, ?)"
     : "INSERT INTO TITLE (UOMID, TYPEID, DESCRIPT, FIRSTRELEASE, CONTENT_SIZE) VALUES (2, ?, ?, ?, ?)";
 
-  const params = seriesID ? [typeID, title, releaseDate, runTimeTotalMin, seriesID, orderNum] : [typeID, title, releaseDate, runTimeTotalMin];
+  const params = seriesId ? [typeId, title, releaseDate, runTimeTotalMin, seriesId, orderNum] : [typeId, title, releaseDate, runTimeTotalMin];
 
   // Runs the query
   Firebird.query(query, params, (err) => {
@@ -186,10 +186,10 @@ router.get("/getGenres", async (req, res) => {
 
 // API route to fetch genres for selected title from Firebird
 router.get("/getGenreByTitleId", async (req, res) => {
-  const titleID = parseInt(req.query.titleID); // <-- grab from URL
+  const titleId = parseInt(req.query.titleId); // <-- grab from URL
 
-  if (isNaN(titleID)) {
-    return res.status(400).json({ error: "Missing titleID" });
+  if (isNaN(titleId)) {
+    return res.status(400).json({ error: "Missing titleId" });
   }
 
   try {
@@ -201,7 +201,7 @@ router.get("/getGenreByTitleId", async (req, res) => {
     // Runs the query
     Firebird.query(
       "SELECT TITLEGENRE.TITLEID, TITLEGENRE.GENREID, TITLEGENRE.ORDERID, GENRE.DESCRIPT FROM TITLEGENRE LEFT OUTER JOIN GENRE ON (TITLEGENRE.GENREID = GENRE.ID) WHERE TITLEGENRE.TITLEID = ? ORDER BY TITLEGENRE.ORDERID",
-      [titleID], // Pass value safely into query
+      [titleId], // Pass value safely into query
       // Callback function -- handles the response
       (err, result) => {
         if (err) {
@@ -238,10 +238,10 @@ router.get("/getSeries", async (req, res) => {
 
 // API route to fetch series of title from Firebird
 router.get("/getSeriesByTitleId", async (req, res) => {
-  const titleID = parseInt(req.query.titleID); // <-- grab from URL
+  const titleId = parseInt(req.query.titleId); // <-- grab from URL
 
-  if (isNaN(titleID)) {
-    return res.status(400).json({ error: "Missing titleID" });
+  if (isNaN(titleId)) {
+    return res.status(400).json({ error: "Missing titleId" });
   }
 
   try {
@@ -253,7 +253,7 @@ router.get("/getSeriesByTitleId", async (req, res) => {
     // Runs the query
     Firebird.query(
       "SELECT TITLE.SERIESID, SERIES.DESCRIPT FROM TITLE LEFT OUTER JOIN SERIES ON (TITLE.SERIESID = SERIES.ID) WHERE TITLE.ID = ? ORDER BY SERIES.DESCRIPT",
-      [titleID], // Pass value safely into query
+      [titleId], // Pass value safely into query
       // Callback function -- handles the response
       (err, result) => {
         if (err) {
@@ -287,7 +287,7 @@ router.post("/addSeries", async (req, res) => {
       return res.status(500).json({ error: err.message });
     }
 
-    // Now fetch the max ID
+    // Now fetch the max Id
     Firebird.query("SELECT MAX(ID) AS ID FROM SERIES", (err2, result) => {
       if (err2) {
         return res.status(500).json({ error: err2.message });
@@ -320,10 +320,10 @@ router.get("/getPlatforms", async (req, res) => {
 
 // API route to fetch platforms for selected titles from Firebird
 router.get("/getPlatformsByTitleId", async (req, res) => {
-  const titleID = parseInt(req.query.titleID); // <-- grab from URL
+  const titleId = parseInt(req.query.titleId); // <-- grab from URL
 
-  if (isNaN(titleID)) {
-    return res.status(400).json({ error: "Missing titleID" });
+  if (isNaN(titleId)) {
+    return res.status(400).json({ error: "Missing titleId" });
   }
 
   try {
@@ -335,7 +335,7 @@ router.get("/getPlatformsByTitleId", async (req, res) => {
     // Runs the query
     Firebird.query(
       "SELECT PLATFORM.TITLEID, PLATFORM.ENTITYID, PLATFORM.ORDERID, ENTITY.DESCRIPT FROM PLATFORM LEFT OUTER JOIN ENTITY ON (PLATFORM.ENTITYID = ENTITY.ID) WHERE PLATFORM.TITLEID = ? ORDER BY PLATFORM.ORDERID",
-      [titleID], // Pass value safely into query
+      [titleId], // Pass value safely into query
       // Callback function -- handles the response
       (err, result) => {
         if (err) {
