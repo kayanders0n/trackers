@@ -19,6 +19,7 @@ TO-DO
 [ ] Redo navbar
 
 [ ] User log (add users to db, add ability for user to track what movies they watch and when and ratings)
+[ ] fix hero to navigate user lists entertainment<->books
 
 [ ] Media Modal EDITING (suggestion from chatGPT)
     [ ] Approach: Add an Edit button inside the existing title modal. When clicked, it: 
