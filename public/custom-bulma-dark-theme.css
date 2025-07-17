@@ -132,6 +132,45 @@ a {
   color: #EDEDED;
 }
 
+.tabs {
+  background-color: #75B8BB;
+  color: #F2F2F2;
+}
+
+.tabs ul {
+  border-bottom-color: #2C2C34;
+}
+
+.tabs li a {
+  background-color: #75B8BB;
+  color: #F2F2F2;
+  border-color: #2C2C34;
+}
+
+.tabs li a:hover {
+  background-color: #75B8BB;
+  color: #ffffff;
+  border-color: #2C2C34 #2C2C34 transparent;
+}
+
+.tabs li.is-active a {
+  background-color: #2C2C34;
+  color: #ffffff;
+  border-color: #2C2C34 #2C2C34 transparent;
+  font-weight: bold;
+}
+
+.tabs li.is-active a span,
+.tabs li.is-active a i {
+  color: #2C2C34 !important;
+}
+
+.tabs li a span,
+.tabs li a i {
+  color: #2C2C34;
+  border-color: #2C2C34 #2C2C34 #2C2C34;
+}
+
 .has-text-muted {
   color: #A0A0A5 !important;
 }
