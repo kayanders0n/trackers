@@ -25,6 +25,8 @@ const entertainmentRoutes = require("./routes/entertainment");
 app.use("/api", entertainmentRoutes);
 const booksRoutes = require("./routes/books");
 app.use("/api", booksRoutes);
+const usersRoutes = require("./routes/users");
+app.use("/api/user", usersRoutes);
 
 // Start the server
 app.listen(PORT, () => {

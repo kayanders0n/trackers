@@ -19,41 +19,38 @@
     <!-- Navigation Bar -->
     <div id="navbar-placeholder"></div>
 
-    <section class="hero is-info is-small">
-      <div class="hero-body">
-        <p class="title">My Account</p>
-      </div>
-      <div class="hero-foot">
-        <nav class="tabs is-boxed is-fullwidth">
-          <div class="container">
-            <ul>
-              <li><a href="/user/profile.html">Profile</a></li>
-              <li><a href="/user/lists.html">Lists</a></li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </section>
-
-    <div class="tabs is-boxed">
+    <div class="tabs is-boxed is-centered">
       <ul>
-        <li class="is-active">
+        <li class="is-active" data-tab="entertainment">
           <a>
             <span class="icon is-small"
-              ><i class="fas fa-image" aria-hidden="true"></i
+              ><i class="fas fa-film" aria-hidden="true"></i
             ></span>
             <span>Entertainment</span>
           </a>
         </li>
-        <li>
+        <li data-tab="books">
           <a>
             <span class="icon is-small"
-              ><i class="fas fa-music" aria-hidden="true"></i
+              ><i class="fas fa-book" aria-hidden="true"></i
             ></span>
             <span>Books</span>
           </a>
         </li>
       </ul>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="section" id="tab-content">
+      <!-- Entertainment Lists -->
+      <div class="tab-pane" id="entertainment-content">
+        <!-- Lists will be injected here by lists.js -->
+      </div>
+
+      <!-- Books Lists -->
+      <div class="tab-pane is-hidden" id="books-content">
+        <!-- Lists will be injected here by lists.js (future feature) -->
+      </div>
     </div>
 
     <script src="../assets/js/utils.js"></script>
