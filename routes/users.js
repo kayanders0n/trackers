@@ -10,9 +10,14 @@ const USER_ID = 1;
 // API route to fetch Titles from Firebird
 router.get("/:userId/lists", async (req, res) => {
   const userId = parseInt(req.params.userId) || USER_ID;
+  const typeId = parseInt(req.query.typeId);
 
   if (isNaN(userId)) {
     return res.status(400).json({ error: "Missing userId" });
+  }
+
+  if (isNaN(typeId)) {
+    return res.status(400).json({ error: "Missing typeId" });
   }
 
   try {
@@ -23,8 +28,8 @@ router.get("/:userId/lists", async (req, res) => {
 
     // Runs the query
     Firebird.query(
-      "SELECT USERLIST.ID, USERLIST.DESCRIPT, COUNT(USERLISTITEMS.ID) AS ITEM_COUNT FROM USERLIST LEFT JOIN USERLISTITEMS ON (USERLISTITEMS.USERLISTID = USERLIST.ID) WHERE USERLIST.USERID = ? GROUP BY USERLIST.ID, USERLIST.LISTTYPEID, USERLIST.DESCRIPT ORDER BY USERLIST.LISTTYPEID NULLS LAST, USERLIST.DESCRIPT NULLS LAST",
-      [userId], // Pass values safely into query
+      "SELECT USERLIST.ID, USERLIST.DESCRIPT, USERLIST.LISTTYPEID, COUNT(USERLISTITEMS.ID) AS ITEM_COUNT FROM USERLIST LEFT JOIN USERLISTITEMS ON (USERLISTITEMS.USERLISTID = USERLIST.ID) WHERE USERLIST.USERID = ? AND USERLIST.TYPEID = ? GROUP BY USERLIST.ID, USERLIST.LISTTYPEID, USERLIST.DESCRIPT ORDER BY USERLIST.LISTTYPEID NULLS LAST, USERLIST.DESCRIPT NULLS LAST",
+      [userId, typeId], // Pass values safely into query
       // Callback function -- handles the response
       (err, result) => {
         if (err) {

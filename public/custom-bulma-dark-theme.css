@@ -132,47 +132,89 @@ a {
   color: #EDEDED;
 }
 
-.tabs {
-  background-color: #75B8BB;
+.tabs.is-boxed {
+  background-color: #2C2C34;
   color: #F2F2F2;
 }
 
-.tabs ul {
+.tabs.is-boxed ul {
   border-bottom-color: #2C2C34;
 }
 
-.tabs li a {
-  background-color: #75B8BB;
-  color: #F2F2F2;
-  border-color: #2C2C34;
-}
-
-.tabs li a:hover {
-  background-color: #75B8BB;
-  color: #ffffff;
-  border-color: #2C2C34 #2C2C34 transparent;
-}
-
-.tabs li.is-active a {
+.tabs.is-boxed li a {
   background-color: #2C2C34;
-  color: #ffffff;
-  border-color: #2C2C34 #2C2C34 transparent;
+  color: #F2F2F2;
+  border-color: #F2F2F2 #F2F2F2 transparent;
+}
+
+.tabs.is-boxed li a:hover {
+  background-color: #3A3A42;
+  color: #F2F2F2;
+  border-color: #F2F2F2 #F2F2F2 transparent;
+}
+
+.tabs.is-boxed li.is-active a {
+  background-color: #F2F2F2;
+  color: #2C2C34;
+  border-color: #F2F2F2 #F2F2F2 transparent;
   font-weight: bold;
 }
 
-.tabs li.is-active a span,
-.tabs li.is-active a i {
+.tabs.is-boxed li.is-active a span,
+.tabs.is-boxed li.is-active a i {
   color: #2C2C34 !important;
 }
 
-.tabs li a span,
-.tabs li a i {
-  color: #2C2C34;
+.tabs.is-boxed li a span,
+.tabs.is-boxed li a i {
+  color: #F2F2F2;
   border-color: #2C2C34 #2C2C34 #2C2C34;
 }
 
 .has-text-muted {
   color: #A0A0A5 !important;
+}
+
+/* List Item Styles */
+.list-link {
+  display: block;
+  background-color: #2C2C34;
+  color: #EDEDED;
+  border: 1px solid #3A3A45;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  padding: 1rem;
+  text-decoration: none;
+}
+
+/* Title and subtitle inside list-link */
+.list-link .title,
+.list-link .subtitle {
+  color: #EDEDED;
+}
+
+/* Hover State */
+.list-link:hover {
+  background-color: #3A3A42;
+  border-color: #75B8BB !important;
+  box-shadow: 0 0 0 1px #75B8BB !important;
+  color: #EDEDED;
+}
+
+/* Hover for title and subtitle */
+.list-link:hover .title,
+.list-link:hover .subtitle {
+  color: #EDEDED;
+}
+
+/* Icon inside list-link */
+.list-link .icon {
+  color: #75B8BB;
+  transition: color 0.2s ease;
+}
+
+.list-link:hover .icon {
+  color: #75B8BB;
 }
 
 .input,

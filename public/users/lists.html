@@ -21,7 +21,7 @@
 
     <div class="tabs is-boxed is-centered">
       <ul>
-        <li class="is-active" data-tab="entertainment">
+        <li data-tab="entertainment" id="entertainment-tab" class="is-active">
           <a>
             <span class="icon is-small"
               ><i class="fas fa-film" aria-hidden="true"></i
@@ -29,7 +29,7 @@
             <span>Entertainment</span>
           </a>
         </li>
-        <li data-tab="books">
+        <li data-tab="books" id="books-tab">
           <a>
             <span class="icon is-small"
               ><i class="fas fa-book" aria-hidden="true"></i
@@ -38,10 +38,11 @@
           </a>
         </li>
       </ul>
-    </div>
+    </div>   
 
     <!-- Tab Content -->
     <div class="section" id="tab-content">
+      <p class="subtitle is-3">My Lists</p>
       <!-- Entertainment Lists -->
       <div class="tab-pane" id="entertainment-content">
         <!-- Lists will be injected here by lists.js -->
