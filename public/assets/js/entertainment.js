@@ -276,6 +276,63 @@ function sortAndRenderTitles(titles, sortBy, direction = "asc") {
   renderTitlesTable(sorted); // redraw the table
 }
 
+// === Load User List Dropdown ===
+async function loadUserListDropdown(titleId) {
+  const container = document.getElementById("user-list-dropdown-container");
+  container.innerHTML = "Loading...";
+
+  try {
+    const response = await fetch(`/api/user/1/lists/list-status?titleId=${titleId}&typeId=6`);
+    const lists = await response.json();
+    if (!Array.isArray(lists)) {
+      throw new Error("Unexpected response: " + JSON.stringify(lists));
+    }
+
+    const dropdown = document.createElement("div");
+    dropdown.className = "box p-3";
+    dropdown.style.maxHeight = "200px";
+    dropdown.style.overflowY = "auto";
+    dropdown.style.border = "1px solid #ccc";
+    dropdown.style.borderRadius = "5px";
+    dropdown.style.backgroundColor = "#2C2C34";
+
+    for (const list of lists) {
+      const label = document.createElement("label");
+      label.className = "checkbox mb-2";
+      label.style.display = "block";
+
+      label.innerHTML = `
+        <input 
+          type="checkbox" 
+          ${list.inList ? "checked" : ""} 
+          onchange="toggleListMembership(${list.listId}, ${titleId}, this.checked)" 
+        />
+        <span class="ml-2">${list.listName}</span>
+      `;
+      dropdown.appendChild(label);
+    }
+
+    container.innerHTML = "";
+    container.appendChild(dropdown);
+  } catch (error) {
+    console.error("Failed to load list dropdown:", error);
+    container.innerHTML = "Error loading lists.";
+  }
+}
+
+// === Toggle List Membership ===
+async function toggleListMembership(listId, titleId, isChecked) {
+  try {
+    await fetch("/api/user/1/lists/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ listId, titleId, checked: isChecked })
+    });
+  } catch (error) {
+    console.error("Failed to update list membership:", error);
+  }
+}
+
 // == Open Title Modal ===
 async function openTitleModal(title) {
   const modal = document.getElementById("current-title-modal");
@@ -299,6 +356,14 @@ async function openTitleModal(title) {
       <p><strong>Genres:</strong> <span class="genre-list">Loading...</span></p>
       <p><strong>Platforms:</strong> <span class="platform-list">Loading...</span></p>
       <p><strong>Series:</strong> <span class="series-list">Loading...</span></p>
+
+      <!-- === Add to User List Button === -->
+      <div class="mt-4">
+        <button class="button is-link is-small" onclick="loadUserListDropdown(${title.ID})">
+          <i class="fas fa-plus"></i>Add to List
+        </button>
+        <div class="mt-2" id="user-list-dropdown-container"></div>
+      </div>
     </div>
   `;
 

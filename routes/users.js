@@ -45,4 +45,46 @@ router.get("/:userId/lists", async (req, res) => {
   }
 });
 
+// --- USER LIST QUERIES ---
+
+// API route to fetch User Lists and Title Membership Status from Firebird
+router.get("/:userId/lists/list-status", async (req, res) => {
+  const userId = parseInt(req.params.userId) || USER_ID;
+  const titleId = parseInt(req.query.titleId);
+  const typeId = parseInt(req.query.typeId); // 6 for entertainment, 1 for books
+
+  if (isNaN(userId) || isNaN(titleId) || isNaN(typeId)) {
+    return res.status(400).json({ error: "Missing required parameters" });
+  }
+
+  try {
+    const Firebird = await getFirebirdClient();
+    if (!Firebird) {
+      return res.status(500).json({ error: "Failed to connect to Firebird" });
+    }
+
+    const query = `
+      SELECT USERLIST.ID AS listId, USERLIST.DESCRIPT AS listName,
+        CASE WHEN EXISTS (
+          SELECT 1 FROM USERLISTITEMS
+          WHERE USERLISTITEMS.USERLISTID = USERLIST.ID AND USERLISTITEMS.TITLEID = ?
+        ) THEN 1 ELSE 0 END AS inList
+      FROM USERLIST
+      WHERE USERLIST.USERID = ? AND USERLIST.TYPEID = ?
+      ORDER BY USERLIST.LISTTYPEID DESC NULLS LAST, USERLIST.DESCRIPT NULLS LAST
+    `;
+
+    Firebird.query(query, [titleId, userId, typeId], (err, result) => {
+      if (err) {
+        Firebird.detach();
+        return res.status(500).json({ error: err.message });
+      }
+      res.json(result);
+      Firebird.detach();
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

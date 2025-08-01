@@ -1,13 +1,13 @@
 const listTypeIcons = {
   1: "fas fa-list",         // User Custom List
-  2: "fas fa-clock",       // Want To Read
-  3: "fas fa-heart",       // Currently Reading
-  4: "fas fa-bookmark",    // Finished Reading
-  5: "fas fa-star",        // Did Not Finish Reading
-  6: "fas fa-clock",       // Want To Watch
-  7: "fas fa-heart",       // Currently Watching
-  8: "fas fa-bookmark",    // Finished Watching
-  9: "fas fa-star",        // Did Not Finish Watching
+  2: "fas fa-bookmark",       // Want To Read
+  3: "fas fa-book-open",       // Currently Reading
+  4: "fas fa-book",    // Finished Reading
+  5: "fas fa-ban",        // Did Not Finish Reading
+  6: "fas fa-ticket",       // Want To Watch
+  7: "fas fa-video",       // Currently Watching
+  8: "fas fa-film",    // Finished Watching
+  9: "fas fa-ban",        // Did Not Finish Watching
 };
 
 function renderLists(lists, containerId) {
