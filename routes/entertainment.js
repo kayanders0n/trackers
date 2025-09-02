@@ -4,6 +4,70 @@ const getFirebirdClient = require("../lib/node-firebird");
 
 // --- TITLE QUERIES ---
 
+router.get("/searchTitles", async (req, res) => {
+  const q = (req.query.q || "").trim();
+  const limit = Math.max(1, Math.min(parseInt(req.query.limit, 10) || 20, 50));
+  // Parse "2,3" -> [2,3]
+  const typeIds  = (req.query.typeIds || "").split(",").map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+
+  if (!q) return res.json([]);
+
+  try {
+    const Firebird = await getFirebirdClient();
+    if (!Firebird) {
+      return res.status(500).json({ error: "Failed to connect to Firebird" });
+    }
+
+    // Base query
+    let sql = `
+      SELECT FIRST ${limit}
+        TITLE.ID,
+        TITLE.DESCRIPT,
+        TYPECODES.DESCRIPT AS TYPENAME,
+        TITLE.FIRSTRELEASE,
+        TITLE.CONTENT_SIZE,
+        TITLE.IMAGEFILE
+      FROM TITLE
+      LEFT OUTER JOIN TYPECODES ON (TITLE.TYPEID = TYPECODES.ID)
+      WHERE 1=1
+    `;
+
+    const params = [];
+
+    // TYPEIDs: default to (2, 3) if none provided
+    if (typeIds.length > 0) {
+      if (typeIds.length === 1) {
+        sql += ` AND TITLE.TYPEID = ?`;
+        params.push(typeIds[0]);
+      } else {
+        const placeholders = typeIds.map(() => "?").join(", ");
+        sql += ` AND TITLE.TYPEID IN (${placeholders})`;
+        params.push(...typeIds);
+      }
+    } else {
+      sql += ` AND TITLE.TYPEID IN (2, 3)`;
+    }
+
+    // Title search
+    sql += ` AND UPPER(TITLE.DESCRIPT) LIKE UPPER(?)`;
+    params.push(`%${q}%`);
+
+    sql += ` ORDER BY TITLE.DESCRIPT`;
+
+    // Run the query
+    Firebird.query(sql, params, (err, result) => {
+      Firebird.detach();
+      if (err) {
+        console.error("searchTitles failed:", err);
+        return res.status(500).json({ error: err.message });
+      }
+      res.json(result);
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // API route to fetch Titles from Firebird
 router.get("/getTitlesBySearch", async (req, res) => {
   const platformId  = parseInt(req.query.platformId);

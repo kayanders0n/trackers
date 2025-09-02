@@ -71,15 +71,85 @@ a {
   border-color: transparent;
 }
 
+.dropdown-content {
+  background-color: #2C2C34 !important;
+  border: 1px solid #3A3A45;
+  color: #EDEDED;
+}
+
+.dropdown-item {
+  background-color: #2C2C34 !important;
+  color: #EDEDED !important;
+}
+
 .dropdown-item:hover,
 .dropdown-item.is-active {
-  background-color: #75B8BB;
-  color: white;
+  background-color: #3A3A42 !important; /* dark hover */
+  color: #75B8BB !important;            /* accent text */
 }
 
 .dropdown-item.is-unselectable {
   pointer-events: none;
   opacity: 0.6;
+}
+
+.dropdown-divider {
+  background-color: #3A3A45;
+}
+
+#title-dropdown {
+  display: block;           /* override Bulma's inline-block */
+  width: 100%;
+  position: relative;       /* so the abs-pos menu anchors to this */
+  z-index: 30;              /* keep it above adjacent UI */
+}
+
+#title-dropdown .dropdown-menu {
+  left: 0;
+  right: 0;                 /* <-- this is key */
+  width: auto;              /* let left+right control width */
+  overflow: visible;        /* menu should NOT scroll */
+  max-height: none;         /* no height cap here */
+  background: transparent;  /* content handles bg/border */
+  border: none;
+}
+
+#title-dropdown .dropdown-content {
+  background-color: #2C2C34 !important;
+  border: 1px solid #3A3A45;
+  max-height: 320px;        /* adjust if you want taller */
+  overflow-y: auto;         /* single scrollbar lives here */
+  width: 100%;              /* fill the stretched menu */
+  box-shadow: none;         /* consistent with your theme */
+}
+
+#title-dropdown .dropdown-item {
+  background-color: transparent !important;
+  color: #EDEDED !important;
+  white-space: nowrap;      /* single line with ellipsis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1rem;      /* space from scrollbar */
+}
+
+#title-dropdown .dropdown-item:hover,
+#title-dropdown .dropdown-item.is-active {
+  background-color: #3A3A42 !important;
+  color: #75B8BB !important;
+}
+
+#title-dropdown .dropdown-content::-webkit-scrollbar {
+  width: 10px;
+}
+#title-dropdown .dropdown-content::-webkit-scrollbar-track {
+  background: #2C2C34;
+}
+#title-dropdown .dropdown-content::-webkit-scrollbar-thumb {
+  background: #3A3A45;
+  border-radius: 6px;
+}
+#title-dropdown .dropdown-content::-webkit-scrollbar-thumb:hover {
+  background: #4A4A54;
 }
 
 .modal .dropdown-content {
@@ -230,6 +300,11 @@ a {
 .select select:focus {
   border-color: #4DA6FF;
   box-shadow: 0 0 0 0.125em rgba(77, 166, 255, 0.25);
+}
+
+.checkbox span {
+  color: #EDEDED; /* or a lighter shade */
+  font-size: 0.95rem; /* tweak smaller/larger as needed */
 }
 
 textarea::placeholder,

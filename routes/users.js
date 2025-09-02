@@ -5,7 +5,7 @@ const getFirebirdClient = require("../lib/node-firebird");
 // Hardcoded user ID for now
 const USER_ID = 1;
 
-// --- USER QUERIES ---
+// --- USER LIST QUERIES ---
 
 // API route to fetch Titles from Firebird
 router.get("/:userId/lists", async (req, res) => {
@@ -45,8 +45,6 @@ router.get("/:userId/lists", async (req, res) => {
   }
 });
 
-// --- USER LIST QUERIES ---
-
 // API route to fetch User Lists and Title Membership Status from Firebird
 router.get("/:userId/lists/list-status", async (req, res) => {
   const userId = parseInt(req.params.userId) || USER_ID;
@@ -64,11 +62,11 @@ router.get("/:userId/lists/list-status", async (req, res) => {
     }
 
     const query = `
-      SELECT USERLIST.ID AS listId, USERLIST.DESCRIPT AS listName,
+      SELECT USERLIST.ID AS LISTID, USERLIST.DESCRIPT AS LISTNAME,
         CASE WHEN EXISTS (
           SELECT 1 FROM USERLISTITEMS
           WHERE USERLISTITEMS.USERLISTID = USERLIST.ID AND USERLISTITEMS.TITLEID = ?
-        ) THEN 1 ELSE 0 END AS inList
+        ) THEN 1 ELSE 0 END AS INLIST
       FROM USERLIST
       WHERE USERLIST.USERID = ? AND USERLIST.TYPEID = ?
       ORDER BY USERLIST.LISTTYPEID DESC NULLS LAST, USERLIST.DESCRIPT NULLS LAST
@@ -84,6 +82,80 @@ router.get("/:userId/lists/list-status", async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// API route to fetch User Lists and Title Membership Status from Firebird
+router.put("/:userId/titles/:titleId/lists", async (req, res) => {
+  const userId  = parseInt(req.params.userId, 10) || USER_ID;
+  const titleId = parseInt(req.params.titleId, 10);
+  const { listIds, typeId } = req.body || {};
+
+  if (isNaN(userId) || isNaN(titleId) || !Array.isArray(listIds)) {
+    return res.status(400).json({ error: "Invalid input" });
+  }
+
+  let db;
+  try {
+    db = await getFirebirdClient(); // returns a db connection (not a tx wrapper)
+    if (!db) return res.status(500).json({ error: "Failed to connect to Firebird" });
+
+    // small promise wrapper for db.query
+    const q = (sql, params = []) =>
+      new Promise((resolve, reject) => {
+        db.query(sql, params, (err, rows) => (err ? reject(err) : resolve(rows)));
+      });
+
+    // 1) current memberships for this user/title (optionally filter by type)
+    const currentRows = await q(
+      `
+        SELECT UL.ID AS LISTID
+        FROM USERLIST UL
+        WHERE UL.USERID = ?
+          /* include type only if provided */
+          ${typeId ? "AND UL.TYPEID = ?" : ""}
+          AND EXISTS (
+            SELECT 1
+            FROM USERLISTITEMS ULI
+            WHERE ULI.USERLISTID = UL.ID
+              AND ULI.TITLEID = ?
+          )
+      `,
+      typeId ? [userId, typeId, titleId] : [userId, titleId]
+    );
+
+    const currentSet = new Set(currentRows.map(r => Number(r.LISTID)));
+    const desiredSet = new Set(listIds.map(Number).filter(Boolean));
+
+    const toAdd = [];
+    const toRemove = [];
+    for (const id of desiredSet) if (!currentSet.has(id)) toAdd.push(id);
+    for (const id of currentSet) if (!desiredSet.has(id)) toRemove.push(id);
+
+    // 2) inserts (trigger fills ID/SORTORDER/CREATEDON)
+    for (const listId of toAdd) {
+      await q(`INSERT INTO USERLISTITEMS (USERLISTID, TITLEID) VALUES (?, ?)`, [listId, titleId]);
+    }
+
+    // 3) deletes (single statement if there are any)
+    if (toRemove.length) {
+      const placeholders = toRemove.map(() => "?").join(", ");
+      await q(
+        `DELETE FROM USERLISTITEMS WHERE TITLEID = ? AND USERLISTID IN (${placeholders})`,
+        [titleId, ...toRemove]
+      );
+    }
+
+    return res.json({
+      added: toAdd,
+      removed: toRemove,
+      unchanged: [...desiredSet].filter(id => !toAdd.includes(id))
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to save list changes" });
+  } finally {
+    try { db && db.detach(); } catch (_) {}
   }
 });
 

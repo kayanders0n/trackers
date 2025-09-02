@@ -25,6 +25,24 @@
         <p class="subtitle is-3">Media Search</p>
         <div class="box">
           <form id="search-form">
+            <!-- Title Selector -->
+            <div class="field">
+              <div class="control has-icons-right">
+                <input class="input" type="text" id="title-search" placeholder="Start typing a title..." autocomplete="off" />
+                <span class="icon is-right">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+
+              <!-- Dropdown results -->
+              <div class="dropdown is-fullwidth" id="title-dropdown">
+                <div class="dropdown-menu" role="menu" style="width: 100%">
+                  <div class="dropdown-content" id="title-results">
+                    <!-- Filtered options will appear here -->
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="field is-grouped is-grouped-multiline is-flex is-flex-wrap-wrap">
               <!-- === Platform Dropdown === -->
               <div class="dropdown" id="platform-dropdown">

@@ -288,49 +288,112 @@ async function loadUserListDropdown(titleId) {
       throw new Error("Unexpected response: " + JSON.stringify(lists));
     }
 
-    const dropdown = document.createElement("div");
-    dropdown.className = "box p-3";
-    dropdown.style.maxHeight = "200px";
-    dropdown.style.overflowY = "auto";
-    dropdown.style.border = "1px solid #ccc";
-    dropdown.style.borderRadius = "5px";
-    dropdown.style.backgroundColor = "#2C2C34";
+    // Local state
+    const initialChecked = new Set(lists.filter(l => Number(l.INLIST) === 1).map(l => l.LISTID));
+    const currentChecked = new Set(initialChecked);
 
+    // UI container
+    const wrap = document.createElement("div");
+    wrap.className = "box p-3";
+    wrap.style.maxHeight = "260px";
+    wrap.style.overflowY = "auto";
+    wrap.style.border = "1px solid #3A3A45";
+    wrap.style.borderRadius = "6px";
+    wrap.style.backgroundColor = "#2C2C34";
+
+    // Checklist
     for (const list of lists) {
-      const label = document.createElement("label");
-      label.className = "checkbox mb-2";
-      label.style.display = "block";
+      const row = document.createElement("label");
+      row.className = "checkbox mb-2";
+      row.style.display = "block";
 
-      label.innerHTML = `
-        <input 
-          type="checkbox" 
-          ${list.inList ? "checked" : ""} 
-          onchange="toggleListMembership(${list.listId}, ${titleId}, this.checked)" 
-        />
-        <span class="ml-2">${list.listName}</span>
-      `;
-      dropdown.appendChild(label);
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = Number(list.INLIST) === 1;
+      cb.dataset.listId = list.LISTID;
+
+      cb.addEventListener("change", () => {
+        const id = Number(cb.dataset.listId);
+        if (cb.checked) currentChecked.add(id);
+        else currentChecked.delete(id);
+        // Toggle save button enable
+        saveBtn.disabled = setsEqual(initialChecked, currentChecked);
+      });
+
+      const name = document.createElement("span");
+      name.className = "ml-2";
+      name.textContent = list.LISTNAME;
+
+      row.appendChild(cb);
+      row.appendChild(name);
+      wrap.appendChild(row);
     }
 
+    // Actions
+    const actions = document.createElement("div");
+    actions.className = "mt-3 is-flex is-justify-content-flex-end is-align-items-center";
+    actions.style.gap = "0.5rem";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "button is-light is-small";
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.onclick = () => {
+      container.innerHTML = "";
+    };
+
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "button is-link is-small";
+    saveBtn.innerHTML = `<i class="fas fa-save mr-1"></i>Save`;
+    saveBtn.disabled = true;
+
+    saveBtn.onclick = async () => {
+      try {
+        saveBtn.disabled = true;
+
+        const finalListIds = [...currentChecked];
+        const res = await fetch(`/api/user/1/titles/${titleId}/lists`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ listIds: finalListIds, typeId: 6 }) // 6 = entertainment
+        });
+
+        if (!res.ok) throw new Error(`Unexpected ${res.status}`);
+        const data = await res.json();
+
+        // Close the little panel
+        container.innerHTML = "";
+        // Toast
+        if (window.bulmaToast) {
+          bulmaToast.toast({ message: "Lists updated", type: "is-success" });
+        }
+      } catch (err) {
+        console.error(err);
+        saveBtn.disabled = false;
+        if (window.bulmaToast) {
+          bulmaToast.toast({ message: "Failed to save changes", type: "is-danger" });
+        }
+      }
+    };
+
+    actions.appendChild(cancelBtn);
+    actions.appendChild(saveBtn);
+
+    // Render
     container.innerHTML = "";
-    container.appendChild(dropdown);
+    container.appendChild(wrap);
+    container.appendChild(actions);
+
   } catch (error) {
     console.error("Failed to load list dropdown:", error);
     container.innerHTML = "Error loading lists.";
   }
 }
 
-// === Toggle List Membership ===
-async function toggleListMembership(listId, titleId, isChecked) {
-  try {
-    await fetch("/api/user/1/lists/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ listId, titleId, checked: isChecked })
-    });
-  } catch (error) {
-    console.error("Failed to update list membership:", error);
-  }
+// helper
+function setsEqual(a, b) {
+  if (a.size !== b.size) return false;
+  for (const v of a) if (!b.has(v)) return false;
+  return true;
 }
 
 // == Open Title Modal ===
@@ -454,9 +517,168 @@ async function addTitle(title, typeId, releaseDate, runTimeTotalMin, seriesId, o
   }
 }
 
+// === Title Selector (autocomplete + modal open) ===
+function setupTitleSelector() {
+  const input = document.getElementById("title-search");
+  const dropdown = document.getElementById("title-dropdown");
+  const resultsBox = document.getElementById("title-results");
+
+  let activeIndex = -1;   // for keyboard nav
+  let currentItems = [];  // cache current result objects
+
+  const debounce = (fn, delay=200) => {
+    let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
+  };
+
+  const closeDropdown = () => {
+    dropdown.classList.remove("is-active");
+    activeIndex = -1;
+    currentItems = [];
+  };
+
+  const openDropdown = () => dropdown.classList.add("is-active");
+
+  const renderResults = (list, q) => {
+    resultsBox.innerHTML = "";
+  
+    // ➊ Special row to show in grid
+    const viewAll = document.createElement("a");
+    viewAll.className = "dropdown-item is-active"; // make it the default active target
+    viewAll.innerHTML = `View results in grid for <strong>"${q}"</strong>`;
+    viewAll.addEventListener("mousedown", (e) => e.preventDefault());
+    viewAll.addEventListener("click", async () => {
+      closeDropdown();
+      const full = await searchTitles(q, 500); // bigger limit for grid
+      showResultsInTable(full);
+    });
+    resultsBox.appendChild(viewAll);
+  
+    if (!list.length) {
+      const empty = document.createElement("div");
+      empty.className = "dropdown-item has-text-grey-light is-unselectable";
+      empty.textContent = "No matches";
+      resultsBox.appendChild(empty);
+      return;
+    }
+  
+    // ➋ Regular hit list (click = open modal, keep as-is)
+    list.forEach((t, i) => {
+      const a = document.createElement("a");
+      a.className = "dropdown-item";
+      a.textContent = t.DESCRIPT + (t.TYPENAME ? `  ·  ${t.TYPENAME}` : "");
+      a.title = t.DESCRIPT;
+      a.dataset.index = i;
+      a.addEventListener("mouseenter", () => setActive(i + 1)); // +1 due to the "view all" row
+      a.addEventListener("mousedown", (e) => e.preventDefault());
+      a.addEventListener("click", () => selectIndex(i));
+      resultsBox.appendChild(a);
+    });
+  };
+
+  const setActive = (idx) => {
+    const items = resultsBox.querySelectorAll(".dropdown-item");
+    items.forEach(el => el.classList.remove("is-active"));
+    if (idx >= 0 && idx < items.length) {
+      items[idx].classList.add("is-active");
+      activeIndex = idx;
+      // keep it in view
+      const el = items[idx];
+      const parent = resultsBox;
+      const top = el.offsetTop, bottom = top + el.offsetHeight;
+      if (top < parent.scrollTop) parent.scrollTop = top;
+      else if (bottom > parent.scrollTop + parent.clientHeight) parent.scrollTop = bottom - parent.clientHeight;
+    }
+  };
+
+  const selectIndex = (idx) => {
+    if (idx < 0 || idx >= currentItems.length) return;
+    const chosen = currentItems[idx];
+    input.value = chosen.DESCRIPT;
+    closeDropdown();
+    openTitleModal(chosen);
+  };
+
+  // Query backend for titles
+  const searchTitles = async (q, limit = 20) => {
+    const url = `/api/searchTitles?q=${encodeURIComponent(q)}&typeIds=2,3&limit=${limit}`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    return res.json();
+  };
+
+  const onInput = debounce(async () => {
+    const q = input.value.trim();
+    if (!q) { closeDropdown(); return; }
+    try {
+      const list = await searchTitles(q, 20); // small list for dropdown
+      currentItems = list;
+      renderResults(list, q);
+      openDropdown();
+      setActive(0); // default to "View results in grid"
+    } catch (e) {
+      console.error("title search failed", e);
+      closeDropdown();
+    }
+  }, 200);
+
+  input.addEventListener("input", onInput);
+
+  // keyboard navigation
+  input.addEventListener("keydown", async (e) => {
+    if (!dropdown.classList.contains("is-active")) return;
+    const items = resultsBox.querySelectorAll(".dropdown-item");
+    if (!items.length) return;
+  
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActive(Math.min(activeIndex + 1, items.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive(Math.max(activeIndex - 1, 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      // If focusing the top “View results…” row or nothing is selected -> grid search
+      if (activeIndex <= 0) {
+        closeDropdown();
+        const q = input.value.trim();
+        if (!q) return;
+        const full = await searchTitles(q, 500);
+        showResultsInTable(full);
+        return;
+      }
+      // otherwise open the chosen modal item
+      const listIndex = activeIndex - 1; // adjust for the top row
+      if (listIndex >= 0 && listIndex < currentItems.length) selectIndex(listIndex);
+    } else if (e.key === "Escape") {
+      closeDropdown();
+    }
+  });
+
+  // open dropdown if user focuses and text exists
+  input.addEventListener("focus", () => {
+    if (input.value.trim() && resultsBox.children.length) {
+      openDropdown();
+    }
+  });
+
+  // hide on outside click
+  document.addEventListener("click", (evt) => {
+    if (!dropdown.contains(evt.target) && evt.target !== input) {
+      closeDropdown();
+    }
+  });
+}
+
+function showResultsInTable(list) {
+  allTitles = list;
+  renderTitlesTable(allTitles);
+  document.getElementById("titles-table-wrapper").classList.remove("is-hidden");
+}
+
 // === Setup Event Listeners After DOM Loads ===
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("titles-table-wrapper").classList.add("is-hidden");
+  setupTitleSelector(); // Prep Titles search bar at startup
   loadAllPlatforms(); // Load platforms into dropdown at startup
   loadAllGenres(); // Load genres into dropdown at startup
   loadSeriesOptions().then(setupSeriesAutocomplete); // Load series into dropdown at startup
