@@ -1,0 +1,14 @@
+1. Normalize inputs you’ll validate against
+   (trim strings, coalesce simple numerics so later checks see canonical values)
+
+2. Cheap required-field checks
+   (NOT NULL/blank, simple booleans/ranges)
+
+3. Cross-row validations (lookups) & business rules
+   (EXISTS/joins, ownership checks, conditional requirements)
+
+4. Cosmetic defaults that don’t affect validations
+   (e.g., make empty notes '' after you’ve already validated)
+
+5. Generate ID (if insert trigger)
+   (last, so you don’t “burn” a sequence if validation fails; move to top only if you log with the new ID in this same trigger)
