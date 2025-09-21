@@ -7,7 +7,8 @@ const USER_ID = 1;
 
 // --- USER LIST QUERIES ---
 
-// API route to fetch Titles from Firebird
+// API route to fetch User's Custom Lists from Firebird
+/***CHANGED - removed reference to listtype ***/
 router.get("/:userId/lists", async (req, res) => {
   const userId = parseInt(req.params.userId) || USER_ID;
   const typeId = parseInt(req.query.typeId);
@@ -28,7 +29,7 @@ router.get("/:userId/lists", async (req, res) => {
 
     // Runs the query
     Firebird.query(
-      "SELECT USERLIST.ID, USERLIST.DESCRIPT, USERLIST.LISTTYPEID, COUNT(USERLISTITEMS.ID) AS ITEM_COUNT FROM USERLIST LEFT JOIN USERLISTITEMS ON (USERLISTITEMS.USERLISTID = USERLIST.ID) WHERE USERLIST.USERID = ? AND USERLIST.TYPEID = ? GROUP BY USERLIST.ID, USERLIST.LISTTYPEID, USERLIST.DESCRIPT ORDER BY USERLIST.LISTTYPEID NULLS LAST, USERLIST.DESCRIPT NULLS LAST",
+      "SELECT USERLIST.ID, USERLIST.DESCRIPT, COUNT(USERLISTITEMS.ID) AS ITEM_COUNT FROM USERLIST LEFT JOIN USERLISTITEMS ON (USERLISTITEMS.USERLISTID = USERLIST.ID) WHERE USERLIST.USERID = ? AND USERLIST.TYPEID = ? GROUP BY USERLIST.ID, USERLIST.DESCRIPT ORDER BY USERLIST.DESCRIPT NULLS LAST",
       [userId, typeId], // Pass values safely into query
       // Callback function -- handles the response
       (err, result) => {
@@ -69,7 +70,7 @@ router.get("/:userId/lists/list-status", async (req, res) => {
         ) THEN 1 ELSE 0 END AS INLIST
       FROM USERLIST
       WHERE USERLIST.USERID = ? AND USERLIST.TYPEID = ?
-      ORDER BY USERLIST.LISTTYPEID DESC NULLS LAST, USERLIST.DESCRIPT NULLS LAST
+      ORDER BY USERLIST.DESCRIPT NULLS LAST
     `;
 
     Firebird.query(query, [titleId, userId, typeId], (err, result) => {
